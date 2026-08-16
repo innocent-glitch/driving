@@ -175,73 +175,110 @@
             color: white;
         }
 
-        /* ===== CARTOON RECEIPT - GREEN & ORANGE THEME ===== */
-        .receipt-container {
+        /* ===== RECEIPT WITH SMALL ROAD SIGNS ===== */
+        .receipt-wrapper {
             max-width: 820px;
             margin: 0 auto;
+            position: relative;
+            padding: 10px 0;
+        }
+
+        /* Small Road Signs - Top Corners */
+        .sign-corner {
+            position: absolute;
+            font-size: 18px;
+            opacity: 0.5;
+            transition: all 0.3s ease;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+        }
+        .sign-corner:hover {
+            opacity: 1;
+            transform: scale(1.3);
+        }
+        .sign-corner-top-left {
+            top: -8px;
+            left: -8px;
+        }
+        .sign-corner-top-right {
+            top: -8px;
+            right: -8px;
+        }
+        .sign-corner-bottom-left {
+            bottom: -8px;
+            left: -8px;
+        }
+        .sign-corner-bottom-right {
+            bottom: -8px;
+            right: -8px;
+        }
+
+        /* Small Road Signs - Floating around */
+        .sign-float {
+            position: absolute;
+            font-size: 16px;
+            opacity: 0.35;
+            transition: all 0.3s ease;
+            animation: floatSign 4s infinite alternate ease-in-out;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.08));
+        }
+        .sign-float:hover {
+            opacity: 0.9;
+            transform: scale(1.4);
+        }
+        .sign-float:nth-child(1) { top: 15%; left: -30px; animation-delay: 0s; }
+        .sign-float:nth-child(2) { top: 40%; right: -30px; animation-delay: 0.5s; }
+        .sign-float:nth-child(3) { bottom: 25%; left: -30px; animation-delay: 1s; }
+        .sign-float:nth-child(4) { bottom: 50%; right: -30px; animation-delay: 1.5s; }
+
+        @keyframes floatSign {
+            0% { transform: translateY(-5px) rotate(-3deg); }
+            100% { transform: translateY(5px) rotate(3deg); }
+        }
+
+        .receipt-container {
             background: white;
-            border-radius: 30px;
+            border-radius: 24px;
             overflow: hidden;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.15);
-            border: 4px solid #16a34a;
+            box-shadow: 0 15px 50px rgba(0,0,0,0.12);
+            border: 3px solid #16a34a;
             position: relative;
         }
 
-        /* Road decoration at top */
-        .receipt-container::before {
-            content: '🚗 🚙 🚕 🚌 🚓 🚑 🚒';
-            position: absolute;
-            top: -12px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: white;
-            padding: 0 20px;
-            font-size: 28px;
-            letter-spacing: 15px;
-            border-radius: 50px;
-            z-index: 10;
-            white-space: nowrap;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-        }
-
-        /* Road strip decoration - Green/Orange */
+        /* Road strip decoration - thinner */
         .road-strip {
             background: repeating-linear-gradient(
                 90deg,
                 #f59e0b 0px,
-                #f59e0b 20px,
-                #16a34a 20px,
-                #16a34a 40px
+                #f59e0b 15px,
+                #16a34a 15px,
+                #16a34a 30px
             );
-            height: 8px;
+            height: 5px;
             width: 100%;
         }
 
-        /* Receipt Header - Green to Orange */
+        /* Receipt Header */
         .receipt-header {
             background: linear-gradient(135deg, #16a34a 0%, #22c55e 50%, #f59e0b 100%);
             color: white;
-            padding: 30px 40px 25px;
+            padding: 20px 30px 16px;
             text-align: center;
             position: relative;
-            border-bottom: 6px dashed #fbbf24;
+            border-bottom: 4px dashed #fbbf24;
         }
 
-        /* Animated cars in header */
+        /* Small animated cars */
         .car-animation {
             display: flex;
             justify-content: center;
-            gap: 20px;
-            font-size: 40px;
-            margin-bottom: 10px;
+            gap: 12px;
+            font-size: 24px;
+            margin-bottom: 6px;
             animation: drive 3s infinite alternate ease-in-out;
         }
         @keyframes drive {
-            0% { transform: translateX(-10px) scale(1); }
-            100% { transform: translateX(10px) scale(1.05); }
-        }
-        .car-animation i {
-            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.2));
+            0% { transform: translateX(-5px); }
+            100% { transform: translateX(5px); }
         }
         .car-animation i:nth-child(1) { animation-delay: 0s; color: #fbbf24; }
         .car-animation i:nth-child(2) { animation-delay: 0.5s; color: #fcd34d; }
@@ -249,289 +286,290 @@
 
         .receipt-header .logo-icon {
             background: white;
-            width: 80px;
-            height: 80px;
+            width: 56px;
+            height: 56px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin: 0 auto 12px;
-            border: 4px solid #f59e0b;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-            font-size: 36px;
+            margin: 0 auto 8px;
+            border: 3px solid #f59e0b;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            font-size: 26px;
             color: #16a34a;
         }
 
         .receipt-header h1 {
-            font-size: 34px;
+            font-size: 24px;
             font-weight: 900;
             letter-spacing: 2px;
             text-transform: uppercase;
             color: white;
-            text-shadow: 2px 2px 0 rgba(0,0,0,0.2);
+            text-shadow: 2px 2px 0 rgba(0,0,0,0.15);
         }
         .receipt-header .school-subtitle {
-            font-size: 16px;
+            font-size: 12px;
             font-weight: 700;
-            letter-spacing: 4px;
+            letter-spacing: 3px;
             color: #fbbf24;
             background: rgba(255,255,255,0.15);
             display: inline-block;
-            padding: 2px 20px;
+            padding: 1px 16px;
             border-radius: 50px;
         }
         .receipt-header .contact-info {
-            font-size: 13px;
-            margin-top: 8px;
+            font-size: 11px;
+            margin-top: 4px;
             color: white;
-            opacity: 0.9;
+            opacity: 0.85;
         }
         .receipt-header .contact-info i {
-            margin: 0 5px;
+            margin: 0 3px;
         }
         .receipt-header .receipt-title {
-            font-size: 22px;
+            font-size: 16px;
             font-weight: 800;
-            letter-spacing: 4px;
-            margin-top: 12px;
-            padding-top: 12px;
-            border-top: 3px dotted rgba(255,255,255,0.3);
+            letter-spacing: 3px;
+            margin-top: 8px;
+            padding-top: 8px;
+            border-top: 3px dotted rgba(255,255,255,0.25);
             color: #fbbf24;
             text-transform: uppercase;
         }
 
         /* Receipt Body */
         .receipt-body {
-            padding: 30px 35px;
+            padding: 20px 25px;
             background: #ffffff;
         }
 
-        /* Emoji decorations */
+        /* Small emoji decoration */
         .emoji-deco {
             text-align: center;
-            font-size: 24px;
-            letter-spacing: 10px;
-            margin-bottom: 15px;
-            opacity: 0.6;
+            font-size: 14px;
+            letter-spacing: 6px;
+            margin-bottom: 10px;
+            opacity: 0.4;
         }
 
-        /* Receipt Info - Green Theme */
+        /* Receipt Info */
         .receipt-info {
             display: grid;
             grid-template-columns: 1fr 1fr 1fr;
-            gap: 15px;
-            margin-bottom: 25px;
-            padding: 20px;
+            gap: 10px;
+            margin-bottom: 16px;
+            padding: 14px;
             background: #ecfdf5;
-            border-radius: 20px;
-            border: 3px dashed #86efac;
+            border-radius: 16px;
+            border: 2px dashed #86efac;
         }
         .receipt-info-item {
             display: flex;
             flex-direction: column;
         }
         .receipt-info-item .label {
-            font-size: 11px;
+            font-size: 9px;
             text-transform: uppercase;
             color: #065f46;
             font-weight: 700;
-            letter-spacing: 0.8px;
+            letter-spacing: 0.6px;
         }
         .receipt-info-item .label i {
-            margin-right: 4px;
+            margin-right: 3px;
             color: #f59e0b;
+            font-size: 10px;
         }
         .receipt-info-item .value {
-            font-size: 16px;
+            font-size: 13px;
             font-weight: 700;
-            margin-top: 4px;
+            margin-top: 2px;
             color: #065f46;
         }
 
-        /* Payment Details - Orange Theme */
+        /* Payment Details */
         .receipt-details {
-            margin: 20px 0;
-            border-radius: 16px;
+            margin: 12px 0;
+            border-radius: 12px;
             overflow: hidden;
-            border: 3px solid #fde68a;
+            border: 2px solid #fde68a;
         }
         .receipt-details table {
             width: 100%;
             border-collapse: collapse;
         }
         .receipt-details table tr {
-            border-bottom: 2px dotted #fde68a;
+            border-bottom: 1px dotted #fde68a;
         }
         .receipt-details table tr:last-child {
             border-bottom: none;
         }
         .receipt-details table td {
-            padding: 14px 20px;
+            padding: 10px 16px;
         }
         .receipt-details table .label {
             color: #92400e;
             font-weight: 600;
-            font-size: 14px;
+            font-size: 12px;
             background: #fffbeb;
-            width: 40%;
+            width: 35%;
         }
         .receipt-details table .label i {
-            margin-right: 8px;
+            margin-right: 6px;
             color: #f59e0b;
+            font-size: 12px;
         }
         .receipt-details table .value {
             font-weight: 700;
             text-align: right;
-            font-size: 15px;
+            font-size: 13px;
             color: #065f46;
         }
 
-        /* Total Box - Green & Orange */
+        /* Total Box */
         .receipt-total {
             background: linear-gradient(135deg, #dcfce7, #fef3c7);
-            padding: 20px 30px;
-            border-radius: 16px;
-            margin-top: 20px;
+            padding: 14px 22px;
+            border-radius: 12px;
+            margin-top: 14px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border: 4px solid #16a34a;
-            position: relative;
+            border: 3px solid #16a34a;
         }
         .receipt-total .car-icon {
-            font-size: 30px;
+            font-size: 20px;
             animation: drive 2s infinite alternate ease-in-out;
         }
         .receipt-total .label {
-            font-size: 20px;
+            font-size: 16px;
             font-weight: 800;
             color: #065f46;
         }
         .receipt-total .amount {
-            font-size: 34px;
+            font-size: 26px;
             font-weight: 900;
             color: #dc2626;
         }
 
-        /* Status Badge - Updated */
+        /* Status Badge */
         .status-badge {
             display: inline-block;
-            padding: 6px 20px;
+            padding: 3px 14px;
             border-radius: 50px;
             font-weight: 700;
-            font-size: 14px;
+            font-size: 11px;
             text-transform: uppercase;
-            letter-spacing: 1px;
+            letter-spacing: 0.8px;
         }
         .status-paid {
             background: #dcfce7;
             color: #166534;
-            border: 3px solid #86efac;
+            border: 2px solid #86efac;
         }
         .status-pending {
             background: #fef3c7;
             color: #92400e;
-            border: 3px solid #fcd34d;
+            border: 2px solid #fcd34d;
         }
         .status-overdue {
             background: #fee2e2;
             color: #991b1b;
-            border: 3px solid #fca5a5;
+            border: 2px solid #fca5a5;
         }
 
         /* Receipt Footer */
         .receipt-footer {
             text-align: center;
-            padding-top: 20px;
-            margin-top: 20px;
-            border-top: 4px dashed #86efac;
+            padding-top: 14px;
+            margin-top: 14px;
+            border-top: 3px dashed #86efac;
             color: #64748b;
-            font-size: 13px;
+            font-size: 11px;
         }
         .receipt-footer .thank-you {
-            font-size: 20px;
+            font-size: 16px;
             font-weight: 800;
             color: #16a34a;
-            margin-bottom: 5px;
+            margin-bottom: 3px;
         }
         .receipt-footer .thank-you i {
             animation: drive 1.5s infinite alternate ease-in-out;
             display: inline-block;
         }
         .receipt-footer .signature-line {
-            margin-top: 15px;
-            padding-top: 15px;
-            border-top: 2px dashed #e2e8f0;
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px dashed #e2e8f0;
             display: flex;
             justify-content: space-around;
-            font-size: 12px;
+            font-size: 10px;
             color: #94a3b8;
         }
         .receipt-footer .signature-line span {
             display: inline-block;
-            border-bottom: 3px dotted #cbd5e1;
-            padding: 0 30px 5px;
+            border-bottom: 2px dotted #cbd5e1;
+            padding: 0 20px 3px;
         }
 
-        /* Footer Icons */
-        .footer-icons {
-            font-size: 28px;
-            letter-spacing: 12px;
-            margin-top: 10px;
-            opacity: 0.5;
+        /* Footer signs - small */
+        .footer-signs {
+            font-size: 18px;
+            letter-spacing: 8px;
+            margin-top: 6px;
+            opacity: 0.3;
         }
 
         /* Receipt Actions */
         .receipt-actions {
             display: flex;
-            gap: 12px;
+            gap: 10px;
             justify-content: center;
-            padding: 20px 25px;
+            padding: 14px 20px;
             background: #ecfdf5;
-            border-top: 4px solid #16a34a;
+            border-top: 3px solid #16a34a;
             flex-wrap: wrap;
         }
         .btn {
-            padding: 10px 24px;
+            padding: 8px 18px;
             border: none;
             border-radius: 50px;
             cursor: pointer;
-            font-size: 14px;
+            font-size: 12px;
             font-weight: 700;
             transition: all 0.3s ease;
             display: inline-flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
             text-decoration: none;
         }
         .btn-primary {
             background: #16a34a;
             color: white;
-            border: 3px solid #065f46;
+            border: 2px solid #065f46;
         }
         .btn-primary:hover {
             background: #15803d;
-            transform: translateY(-3px) scale(1.02);
-            box-shadow: 0 6px 20px rgba(22,163,74,0.3);
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: 0 4px 15px rgba(22,163,74,0.3);
         }
         .btn-success {
             background: #f59e0b;
             color: white;
-            border: 3px solid #d97706;
+            border: 2px solid #d97706;
         }
         .btn-success:hover {
             background: #d97706;
-            transform: translateY(-3px) scale(1.02);
-            box-shadow: 0 6px 20px rgba(245,158,11,0.3);
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: 0 4px 15px rgba(245,158,11,0.3);
         }
         .btn-secondary {
             background: #64748b;
             color: white;
-            border: 3px solid #475569;
+            border: 2px solid #475569;
         }
         .btn-secondary:hover {
             background: #475569;
-            transform: translateY(-3px) scale(1.02);
+            transform: translateY(-2px) scale(1.02);
         }
 
         .overlay {
@@ -546,12 +584,78 @@
         }
         .overlay.show { display: block; }
 
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 850px) {
+            .sign-float { display: none; }
+            .sign-corner { font-size: 14px; }
+            .sign-corner-top-left { top: -5px; left: -5px; }
+            .sign-corner-top-right { top: -5px; right: -5px; }
+            .sign-corner-bottom-left { bottom: -5px; left: -5px; }
+            .sign-corner-bottom-right { bottom: -5px; right: -5px; }
+        }
+        @media (max-width: 768px) {
+            .sign-corner { display: none; }
+            .sidebar {
+                transform: translateX(-100%);
+                width: 280px;
+            }
+            .sidebar.open { transform: translateX(0); }
+            .main-content {
+                margin-left: 0;
+                padding: 15px;
+            }
+            .mobile-toggle {
+                display: block !important;
+            }
+            .receipt-info {
+                grid-template-columns: 1fr 1fr;
+                gap: 8px;
+                padding: 10px;
+            }
+            .receipt-total {
+                flex-direction: column;
+                text-align: center;
+                gap: 6px;
+            }
+            .receipt-total .amount { font-size: 22px; }
+            .receipt-header h1 { font-size: 20px; }
+            .receipt-body { padding: 15px; }
+            .receipt-actions { flex-direction: column; align-items: stretch; }
+            .receipt-actions .btn { justify-content: center; }
+            .top-nav-left h1 { font-size: 18px; }
+            .user-profile span { display: none; }
+            .car-animation { font-size: 18px; gap: 8px; }
+            .receipt-wrapper { padding: 0; }
+        }
+        @media (max-width: 480px) {
+            .main-content { padding: 10px; }
+            .top-nav { padding: 12px 15px; flex-wrap: wrap; gap: 10px; }
+            .receipt-container { border-radius: 16px; border-width: 2px; }
+            .receipt-header { padding: 14px 12px; }
+            .receipt-header h1 { font-size: 16px; }
+            .receipt-header .logo-icon { width: 40px; height: 40px; font-size: 18px; }
+            .receipt-body { padding: 10px; }
+            .receipt-info {
+                grid-template-columns: 1fr;
+                gap: 6px;
+                padding: 8px;
+            }
+            .receipt-total .amount { font-size: 18px; }
+            .receipt-details table td { padding: 6px 10px; font-size: 11px; }
+            .car-animation { font-size: 14px; gap: 4px; }
+            .receipt-total .car-icon { font-size: 14px; }
+            .receipt-header .receipt-title { font-size: 12px; }
+            .footer-signs { font-size: 14px; letter-spacing: 4px; }
+            .receipt-footer .thank-you { font-size: 13px; }
+        }
+
         /* Print Styles */
         @media print {
             .receipt-actions { display: none !important; }
             .sidebar { display: none !important; }
             .main-content { margin: 0 !important; padding: 0 !important; }
             .top-nav { display: none !important; }
+            .sign-corner, .sign-float { display: none !important; }
             .receipt-container { 
                 box-shadow: none !important; 
                 border-radius: 0 !important; 
@@ -580,74 +684,11 @@
                 -webkit-print-color-adjust: exact !important;
                 print-color-adjust: exact !important;
             }
-            .receipt-container::before { display: none !important; }
             .car-animation { animation: none !important; }
             .car-animation i { animation: none !important; }
             .receipt-total .car-icon { animation: none !important; }
             .receipt-footer .thank-you i { animation: none !important; }
-        }
-
-        @media (max-width: 768px) {
-            .sidebar {
-                transform: translateX(-100%);
-                width: 280px;
-            }
-            .sidebar.open { transform: translateX(0); }
-            .main-content {
-                margin-left: 0;
-                padding: 15px;
-            }
-            .mobile-toggle {
-                display: block !important;
-            }
-            .receipt-info {
-                grid-template-columns: 1fr 1fr;
-                gap: 12px;
-                padding: 15px;
-            }
-            .receipt-total {
-                flex-direction: column;
-                text-align: center;
-                gap: 10px;
-            }
-            .receipt-total .amount { font-size: 28px; }
-            .receipt-header h1 { font-size: 26px; }
-            .receipt-body { padding: 20px; }
-            .receipt-actions { flex-direction: column; align-items: stretch; }
-            .receipt-actions .btn { justify-content: center; }
-            .top-nav-left h1 { font-size: 18px; }
-            .user-profile span { display: none; }
-            .receipt-container::before {
-                font-size: 18px;
-                letter-spacing: 8px;
-                padding: 0 15px;
-                top: -10px;
-            }
-            .car-animation { font-size: 28px; gap: 10px; }
-        }
-        @media (max-width: 480px) {
-            .main-content { padding: 10px; }
-            .top-nav { padding: 12px 15px; flex-wrap: wrap; gap: 10px; }
-            .receipt-container { border-radius: 20px; border-width: 3px; }
-            .receipt-container::before {
-                font-size: 14px;
-                letter-spacing: 5px;
-                padding: 0 10px;
-                top: -8px;
-            }
-            .receipt-header { padding: 20px 15px; }
-            .receipt-header h1 { font-size: 20px; }
-            .receipt-header .logo-icon { width: 60px; height: 60px; font-size: 28px; }
-            .receipt-body { padding: 15px; }
-            .receipt-info {
-                grid-template-columns: 1fr;
-                gap: 10px;
-                padding: 12px;
-            }
-            .receipt-total .amount { font-size: 24px; }
-            .receipt-details table td { padding: 10px 14px; font-size: 13px; }
-            .car-animation { font-size: 20px; gap: 8px; }
-            .receipt-total .car-icon { font-size: 22px; }
+            .road-strip { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
         }
     </style>
 </head>
@@ -687,7 +728,7 @@
                 <button class="mobile-toggle" onclick="toggleSidebar()">
                     <i class="fas fa-bars"></i>
                 </button>
-                <h1>🚗 Payment Receipt</h1>
+                <h1>🚦 Payment Receipt</h1>
             </div>
             <div class="top-nav-right">
                 <div class="user-profile" onclick="handleLogout()">
@@ -697,123 +738,137 @@
             </div>
         </div>
 
-        <div class="receipt-container" id="receiptContainer">
-            <!-- Road Strip Decoration -->
-            <div class="road-strip"></div>
+        <!-- RECEIPT WITH SMALL ROAD SIGNS -->
+        <div class="receipt-wrapper">
+            <!-- Corner Signs - Small -->
+            <span class="sign-corner sign-corner-top-left" style="color: #dc2626;">🚦</span>
+            <span class="sign-corner sign-corner-top-right" style="color: #16a34a;">🚸</span>
+            <span class="sign-corner sign-corner-bottom-left" style="color: #f59e0b;">⚠️</span>
+            <span class="sign-corner sign-corner-bottom-right" style="color: #3b82f6;">🏫</span>
 
-            <div class="receipt-header">
-                <!-- Animated Cars -->
-                <div class="car-animation">
-                    <i class="fas fa-car"></i>
-                    <i class="fas fa-car"></i>
-                    <i class="fas fa-car"></i>
+            <!-- Floating Signs - Small -->
+            <span class="sign-float" style="color: #dc2626;">🚦</span>
+            <span class="sign-float" style="color: #16a34a;">🚸</span>
+            <span class="sign-float" style="color: #f59e0b;">🛑</span>
+            <span class="sign-float" style="color: #3b82f6;">🏫</span>
+
+            <div class="receipt-container" id="receiptContainer">
+                <!-- Road Strip -->
+                <div class="road-strip"></div>
+
+                <div class="receipt-header">
+                    <div class="car-animation">
+                        <i class="fas fa-car"></i>
+                        <i class="fas fa-car"></i>
+                        <i class="fas fa-car"></i>
+                    </div>
+
+                    <div class="logo-icon">
+                        <i class="fas fa-car"></i>
+                    </div>
+                    <h1>🚗 EXCEL INSTITUTE</h1>
+                    <div class="school-subtitle">🏎️ Driving School 🏎️</div>
+                    <div class="contact-info">
+                        <i class="fas fa-phone"></i> +254 700 000 000 &nbsp;|&nbsp; 
+                        <i class="fas fa-envelope"></i> info@excelinstitute.com &nbsp;|&nbsp;
+                        <i class="fas fa-map-marker-alt"></i> Nairobi, Kenya
+                    </div>
+                    <div class="receipt-title">🏁 OFFICIAL PAYMENT RECEIPT 🏁</div>
                 </div>
 
-                <div class="logo-icon">
-                    <i class="fas fa-car"></i>
-                </div>
-                <h1>🚗 EXCEL INSTITUTE</h1>
-                <div class="school-subtitle">🏎️ Driving School 🏎️</div>
-                <div class="contact-info">
-                    <i class="fas fa-phone"></i> +254 700 000 000 &nbsp;|&nbsp; 
-                    <i class="fas fa-envelope"></i> info@excelinstitute.com &nbsp;|&nbsp;
-                    <i class="fas fa-map-marker-alt"></i> Nairobi, Kenya
-                </div>
-                <div class="receipt-title">🏁 OFFICIAL PAYMENT RECEIPT 🏁</div>
-            </div>
+                <div class="road-strip"></div>
 
-            <div class="road-strip"></div>
+                <div class="receipt-body" id="receiptBody">
+                    <div class="emoji-deco">
+                        🚦 🚗 🚙 🚕 🚌 🚓 🚑 🚒 🚦
+                    </div>
 
-            <div class="receipt-body" id="receiptBody">
-                <div class="emoji-deco">
-                    🚦 🚗 🚙 🚕 🚌 🚓 🚑 🚒 🚦
-                </div>
+                    <div class="receipt-info">
+                        <div class="receipt-info-item">
+                            <span class="label"><i class="fas fa-receipt"></i> Receipt Number</span>
+                            <span class="value" id="receiptNo">---</span>
+                        </div>
+                        <div class="receipt-info-item">
+                            <span class="label"><i class="fas fa-calendar"></i> Date</span>
+                            <span class="value" id="receiptDate">---</span>
+                        </div>
+                        <div class="receipt-info-item">
+                            <span class="label"><i class="fas fa-info-circle"></i> Status</span>
+                            <span class="value" id="paymentStatus">---</span>
+                        </div>
+                        <div class="receipt-info-item">
+                            <span class="label"><i class="fas fa-user"></i> Student Name</span>
+                            <span class="value" id="studentName">---</span>
+                        </div>
+                        <div class="receipt-info-item">
+                            <span class="label"><i class="fas fa-id-card"></i> Student ID</span>
+                            <span class="value" id="studentId">---</span>
+                        </div>
+                        <div class="receipt-info-item">
+                            <span class="label"><i class="fas fa-credit-card"></i> Payment Method</span>
+                            <span class="value" id="paymentMethod">---</span>
+                        </div>
+                    </div>
 
-                <div class="receipt-info">
-                    <div class="receipt-info-item">
-                        <span class="label"><i class="fas fa-receipt"></i> Receipt Number</span>
-                        <span class="value" id="receiptNo">---</span>
+                    <div class="receipt-details">
+                        <table>
+                            <tr>
+                                <td class="label"><i class="fas fa-info"></i> Description</td>
+                                <td class="value" id="paymentDescription">Driving Lesson Fees</td>
+                            </tr>
+                            <tr>
+                                <td class="label"><i class="fas fa-money-bill"></i> Amount Paid</td>
+                                <td class="value" id="amountPaid">KSh 0.00</td>
+                            </tr>
+                            <tr>
+                                <td class="label"><i class="fas fa-balance-scale"></i> Balance</td>
+                                <td class="value" id="balanceDue">KSh 0.00</td>
+                            </tr>
+                            <tr>
+                                <td class="label"><i class="fas fa-sticky-note"></i> Notes</td>
+                                <td class="value" id="paymentNotes" style="text-align: left; font-weight: normal; color: #64748b;">---</td>
+                            </tr>
+                        </table>
                     </div>
-                    <div class="receipt-info-item">
-                        <span class="label"><i class="fas fa-calendar"></i> Date</span>
-                        <span class="value" id="receiptDate">---</span>
-                    </div>
-                    <div class="receipt-info-item">
-                        <span class="label"><i class="fas fa-info-circle"></i> Status</span>
-                        <span class="value" id="paymentStatus">---</span>
-                    </div>
-                    <div class="receipt-info-item">
-                        <span class="label"><i class="fas fa-user"></i> Student Name</span>
-                        <span class="value" id="studentName">---</span>
-                    </div>
-                    <div class="receipt-info-item">
-                        <span class="label"><i class="fas fa-id-card"></i> Student ID</span>
-                        <span class="value" id="studentId">---</span>
-                    </div>
-                    <div class="receipt-info-item">
-                        <span class="label"><i class="fas fa-credit-card"></i> Payment Method</span>
-                        <span class="value" id="paymentMethod">---</span>
-                    </div>
-                </div>
 
-                <div class="receipt-details">
-                    <table>
-                        <tr>
-                            <td class="label"><i class="fas fa-info"></i> Description</td>
-                            <td class="value" id="paymentDescription">Driving Lesson Fees</td>
-                        </tr>
-                        <tr>
-                            <td class="label"><i class="fas fa-money-bill"></i> Amount Paid</td>
-                            <td class="value" id="amountPaid">KSh 0.00</td>
-                        </tr>
-                        <tr>
-                            <td class="label"><i class="fas fa-balance-scale"></i> Balance</td>
-                            <td class="value" id="balanceDue">KSh 0.00</td>
-                        </tr>
-                        <tr>
-                            <td class="label"><i class="fas fa-sticky-note"></i> Notes</td>
-                            <td class="value" id="paymentNotes" style="text-align: left; font-weight: normal; color: #64748b;">---</td>
-                        </tr>
-                    </table>
-                </div>
-
-                <div class="receipt-total">
-                    <span class="car-icon">🚗</span>
-                    <span class="label">🏁 Total Amount 🏁</span>
-                    <span class="amount" id="totalAmount">KSh 0.00</span>
-                    <span class="car-icon">🚗</span>
-                </div>
-
-                <div class="receipt-footer">
-                    <div class="thank-you">
-                        <i class="fas fa-car"></i> Thank you for your payment! <i class="fas fa-car"></i>
+                    <div class="receipt-total">
+                        <span class="car-icon">🚗</span>
+                        <span class="label">🏁 Total Amount 🏁</span>
+                        <span class="amount" id="totalAmount">KSh 0.00</span>
+                        <span class="car-icon">🚗</span>
                     </div>
-                    <p style="font-size: 11px; margin-top: 5px; color: #94a3b8;">
-                        🚦 This is a computer-generated receipt. No signature required. 🚦
-                    </p>
-                    <p style="font-size: 11px; margin-top: 3px; color: #94a3b8;">
-                        🕐 Generated on: <span id="generatedDate"></span>
-                    </p>
-                    <div class="signature-line">
-                        <div><span>✍️ Authorized Signature</span></div>
-                        <div><span>📅 Date</span></div>
-                    </div>
-                    <div class="footer-icons">
-                        🚗 🚙 🚕 🚌 🚓 🚑 🚒
+
+                    <div class="receipt-footer">
+                        <div class="thank-you">
+                            <i class="fas fa-car"></i> Thank you for your payment! <i class="fas fa-car"></i>
+                        </div>
+                        <p style="font-size: 10px; margin-top: 3px; color: #94a3b8;">
+                            🚦 This is a computer-generated receipt. No signature required. 🚦
+                        </p>
+                        <p style="font-size: 10px; margin-top: 2px; color: #94a3b8;">
+                            🕐 Generated on: <span id="generatedDate"></span>
+                        </p>
+                        <div class="signature-line">
+                            <div><span>✍️ Authorized Signature</span></div>
+                            <div><span>📅 Date</span></div>
+                        </div>
+                        <div class="footer-signs">
+                            🚦 🚸 🛑 ⚠️ 🚗 🚙 🚕
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="receipt-actions">
-                <button class="btn btn-primary" onclick="window.print()">
-                    <i class="fas fa-print"></i> 🖨️ Print Receipt
-                </button>
-                <button class="btn btn-success" onclick="downloadReceipt()">
-                    <i class="fas fa-download"></i> ⬇️ Download
-                </button>
-                <a href="payments.html" class="btn btn-secondary">
-                    <i class="fas fa-arrow-left"></i> 🔙 Back to Payments
-                </a>
+                <div class="receipt-actions">
+                    <button class="btn btn-primary" onclick="window.print()">
+                        <i class="fas fa-print"></i> 🖨️ Print
+                    </button>
+                    <button class="btn btn-success" onclick="downloadReceipt()">
+                        <i class="fas fa-download"></i> ⬇️ Download
+                    </button>
+                    <a href="payments.html" class="btn btn-secondary">
+                        <i class="fas fa-arrow-left"></i> 🔙 Back
+                    </a>
+                </div>
             </div>
         </div>
     </div>
