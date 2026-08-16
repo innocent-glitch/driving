@@ -5,9 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard - EXCEL INSTITUTE Driving School</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <link rel="stylesheet" href="css/style.css">
     <style>
-        /* ===== SIDEBAR STYLES ===== */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -101,6 +99,9 @@
             width: 20px;
             font-size: 16px;
             text-align: center;
+        }
+        .sidebar-menu .admin-only {
+            display: block;
         }
 
         .main-content {
@@ -324,7 +325,6 @@
         .table-container.recent-activities { background: linear-gradient(135deg, #dc2626, #b91c1c); }
         .table-container.financial-summary { background: linear-gradient(135deg, #16a34a, #15803d); }
         .table-container.quick-stats { background: linear-gradient(135deg, #f59e0b, #d97706); }
-        .table-container.inquiries { background: linear-gradient(135deg, #f59e0b, #d97706); }
 
         .table-header {
             padding: 18px 24px;
@@ -485,16 +485,16 @@
         <ul class="sidebar-menu">
             <li class="menu-label">Main</li>
             <li><a href="dashboard.html" class="active"><i class="fas fa-home"></i> Dashboard</a></li>
-            <li><a href="students.html"><i class="fas fa-users"></i> Students</a></li>
-            <li><a href="instructors.html"><i class="fas fa-chalkboard-teacher"></i> Instructors</a></li>
-            <li><a href="vehicles.html"><i class="fas fa-car"></i> Vehicles</a></li>
-            <li><a href="lessons.html"><i class="fas fa-calendar-alt"></i> Lessons</a></li>
-            <li><a href="payments.html"><i class="fas fa-money-bill-wave"></i> Payments</a></li>
-            <li><a href="inquiries.html"><i class="fas fa-envelope"></i> Inquiries</a></li>
+            <li class="admin-only"><a href="students.html"><i class="fas fa-users"></i> Students</a></li>
+            <li class="admin-only"><a href="instructors.html"><i class="fas fa-chalkboard-teacher"></i> Instructors</a></li>
+            <li class="admin-only"><a href="vehicles.html"><i class="fas fa-car"></i> Vehicles</a></li>
+            <li class="admin-only"><a href="lessons.html"><i class="fas fa-calendar-alt"></i> Lessons</a></li>
+            <li class="admin-only"><a href="payments.html"><i class="fas fa-money-bill-wave"></i> Payments</a></li>
+            <li class="admin-only"><a href="inquiries.html"><i class="fas fa-envelope"></i> Inquiries</a></li>
             <li><a href="student-inquiry.html"><i class="fas fa-pen"></i> Submit Inquiry</a></li>
             <li><a href="student-portal.html"><i class="fas fa-user-graduate"></i> Student Portal</a></li>
-            <li class="menu-label">Reports</li>
-            <li><a href="reports.html"><i class="fas fa-chart-bar"></i> Reports</a></li>
+            <li class="menu-label admin-only">Reports</li>
+            <li class="admin-only"><a href="reports.html"><i class="fas fa-chart-bar"></i> Reports</a></li>
             <li><a href="change-password.html"><i class="fas fa-key"></i> Change Password</a></li>
         </ul>
     </nav>
@@ -561,12 +561,12 @@
             </div>
         </div>
 
-        <div class="quick-actions-grid">
-            <a href="student-add.html" class="quick-action-btn"><i class="fas fa-user-plus"></i> Add Student</a>
-            <a href="instructor-add.html" class="quick-action-btn"><i class="fas fa-chalkboard-teacher"></i> Add Instructor</a>
-            <a href="vehicle-add.html" class="quick-action-btn"><i class="fas fa-plus-circle"></i> Add Vehicle</a>
-            <a href="lesson-add.html" class="quick-action-btn"><i class="fas fa-calendar-plus"></i> Schedule Lesson</a>
-            <a href="payment-add.html" class="quick-action-btn"><i class="fas fa-receipt"></i> Record Payment</a>
+        <div class="quick-actions-grid" id="quickActions">
+            <a href="student-add.html" class="quick-action-btn admin-only"><i class="fas fa-user-plus"></i> Add Student</a>
+            <a href="instructor-add.html" class="quick-action-btn admin-only"><i class="fas fa-chalkboard-teacher"></i> Add Instructor</a>
+            <a href="vehicle-add.html" class="quick-action-btn admin-only"><i class="fas fa-plus-circle"></i> Add Vehicle</a>
+            <a href="lesson-add.html" class="quick-action-btn admin-only"><i class="fas fa-calendar-plus"></i> Schedule Lesson</a>
+            <a href="payment-add.html" class="quick-action-btn admin-only"><i class="fas fa-receipt"></i> Record Payment</a>
             <a href="student-inquiry.html" class="quick-action-btn"><i class="fas fa-pen"></i> Submit Inquiry</a>
         </div>
 
@@ -629,8 +629,16 @@
 
     <script>
         // ============================================
-        // DASHBOARD FUNCTIONS - FULLY WORKING
+        // ACCESS CONTROL
         // ============================================
+        function getCurrentUser() {
+            return JSON.parse(localStorage.getItem('user') || 'null');
+        }
+
+        function isAdmin() {
+            var user = getCurrentUser();
+            return user && user.role === 'admin';
+        }
 
         function toggleSidebar() {
             var sidebar = document.getElementById('sidebar');
@@ -649,109 +657,62 @@
             }
         }
 
-        function getCurrentUser() {
-            return JSON.parse(localStorage.getItem('user') || 'null');
+        // ============================================
+        // HIDE ADMIN-ONLY ITEMS FROM NON-ADMINS
+        // ============================================
+        function updateVisibility() {
+            var user = getCurrentUser();
+            var isAdminUser = user && user.role === 'admin';
+            
+            document.querySelectorAll('.admin-only').forEach(function(el) {
+                el.style.display = isAdminUser ? '' : 'none';
+            });
         }
 
         // ============================================
         // LOAD DASHBOARD DATA
         // ============================================
         function loadDashboardData() {
-            // Get data from localStorage
             var students = JSON.parse(localStorage.getItem('students')) || [];
             var instructors = JSON.parse(localStorage.getItem('instructors')) || [];
             var vehicles = JSON.parse(localStorage.getItem('vehicles')) || [];
             var lessons = JSON.parse(localStorage.getItem('lessons')) || [];
             var payments = JSON.parse(localStorage.getItem('payments')) || [];
 
-            console.log('📊 Loading Dashboard Data...');
-            console.log('Students:', students.length);
-            console.log('Instructors:', instructors.length);
-            console.log('Vehicles:', vehicles.length);
-            console.log('Lessons:', lessons.length);
-            console.log('Payments:', payments.length);
+            document.getElementById('totalStudents').textContent = students.length;
+            var active = students.filter(function(s) { return s.status === 'active'; }).length;
+            document.getElementById('activeStudentsCount').textContent = active;
+            var activeInst = instructors.filter(function(i) { return i.status === 'active'; }).length;
+            document.getElementById('totalInstructors').textContent = activeInst;
+            var avail = vehicles.filter(function(v) { return v.status === 'available'; }).length;
+            document.getElementById('availableVehicles').textContent = avail;
+            var today = new Date().toISOString().split('T')[0];
+            var todayCount = lessons.filter(function(l) { return l.lessonDate === today; }).length;
+            document.getElementById('todayLessons').textContent = todayCount;
 
-            // ===== UPDATE STATS =====
-            // Total Students
-            var totalStudents = document.getElementById('totalStudents');
-            if (totalStudents) totalStudents.textContent = students.length;
-
-            // Active Students
-            var activeStudents = document.getElementById('activeStudentsCount');
-            if (activeStudents) {
-                var active = students.filter(function(s) { return s.status === 'active'; }).length;
-                activeStudents.textContent = active;
-            }
-
-            // Active Instructors
-            var totalInstructors = document.getElementById('totalInstructors');
-            if (totalInstructors) {
-                var activeInst = instructors.filter(function(i) { return i.status === 'active'; }).length;
-                totalInstructors.textContent = activeInst;
-            }
-
-            // Available Vehicles
-            var availableVehicles = document.getElementById('availableVehicles');
-            if (availableVehicles) {
-                var avail = vehicles.filter(function(v) { return v.status === 'available'; }).length;
-                availableVehicles.textContent = avail;
-            }
-
-            // Today's Lessons
-            var todayLessons = document.getElementById('todayLessons');
-            if (todayLessons) {
-                var today = new Date().toISOString().split('T')[0];
-                var todayCount = lessons.filter(function(l) { return l.lessonDate === today; }).length;
-                todayLessons.textContent = todayCount;
-            }
-
-            // ===== FINANCIAL SUMMARY =====
             var totalRevenue = payments.reduce(function(sum, p) { return sum + (p.amount || 0); }, 0);
             var totalBalance = payments.reduce(function(sum, p) { return sum + (p.balance || 0); }, 0);
             var avgPayment = payments.length > 0 ? totalRevenue / payments.length : 0;
 
-            var totalPayments = document.getElementById('totalPayments');
-            if (totalPayments) totalPayments.textContent = 'KSh ' + totalRevenue.toLocaleString();
+            document.getElementById('totalPayments').textContent = 'KSh ' + totalRevenue.toLocaleString();
+            document.getElementById('outstandingBalance').textContent = 'KSh ' + totalBalance.toLocaleString();
+            document.getElementById('averagePayment').textContent = 'KSh ' + avgPayment.toLocaleString();
 
-            var outstandingBalance = document.getElementById('outstandingBalance');
-            if (outstandingBalance) outstandingBalance.textContent = 'KSh ' + totalBalance.toLocaleString();
+            var completed = lessons.filter(function(l) { return l.status === 'completed'; }).length;
+            document.getElementById('completedLessons').textContent = completed;
+            var scheduled = lessons.filter(function(l) { return l.status === 'scheduled'; }).length;
+            document.getElementById('scheduledLessons').textContent = scheduled;
+            document.getElementById('totalPaymentsCount').textContent = payments.length;
+            document.getElementById('totalVehicles').textContent = vehicles.length;
 
-            var averagePayment = document.getElementById('averagePayment');
-            if (averagePayment) averagePayment.textContent = 'KSh ' + avgPayment.toLocaleString();
-
-            // ===== QUICK STATS =====
-            var completedLessons = document.getElementById('completedLessons');
-            if (completedLessons) {
-                var completed = lessons.filter(function(l) { return l.status === 'completed'; }).length;
-                completedLessons.textContent = completed;
-            }
-
-            var scheduledLessons = document.getElementById('scheduledLessons');
-            if (scheduledLessons) {
-                var scheduled = lessons.filter(function(l) { return l.status === 'scheduled'; }).length;
-                scheduledLessons.textContent = scheduled;
-            }
-
-            var totalPaymentsCount = document.getElementById('totalPaymentsCount');
-            if (totalPaymentsCount) totalPaymentsCount.textContent = payments.length;
-
-            var totalVehicles = document.getElementById('totalVehicles');
-            if (totalVehicles) totalVehicles.textContent = vehicles.length;
-
-            // ===== RECENT ACTIVITIES =====
             loadRecentActivities(students, lessons, payments);
         }
 
-        // ============================================
-        // LOAD RECENT ACTIVITIES
-        // ============================================
         function loadRecentActivities(students, lessons, payments) {
             var container = document.getElementById('recentActivities');
             if (!container) return;
-
             var activities = [];
 
-            // Recent Students
             var recentStudents = students.slice(-3).reverse();
             recentStudents.forEach(function(s) {
                 activities.push({
@@ -761,7 +722,6 @@
                 });
             });
 
-            // Recent Lessons
             var recentLessons = lessons.slice(-3).reverse();
             recentLessons.forEach(function(l) {
                 var statusText = l.status ? l.status.charAt(0).toUpperCase() + l.status.slice(1) : 'Scheduled';
@@ -772,7 +732,6 @@
                 });
             });
 
-            // Recent Payments
             var recentPayments = payments.slice(-3).reverse();
             recentPayments.forEach(function(p) {
                 activities.push({
@@ -782,7 +741,6 @@
                 });
             });
 
-            // Render Activities
             if (activities.length === 0) {
                 container.innerHTML = '<div style="padding: 30px; text-align: center; color: rgba(255,255,255,0.6);"><i class="fas fa-inbox" style="font-size: 30px; display: block; margin-bottom: 10px;"></i>No recent activities</div>';
                 return;
@@ -801,9 +759,6 @@
             container.innerHTML = html;
         }
 
-        // ============================================
-        // UPDATE USER PROFILE
-        // ============================================
         function updateUserProfile() {
             var user = getCurrentUser();
             var avatar = document.getElementById('userAvatar');
@@ -819,23 +774,16 @@
             }
         }
 
-        // ============================================
-        // INITIALIZE
-        // ============================================
         document.addEventListener('DOMContentLoaded', function() {
-            console.log('🚀 Dashboard Initializing...');
-
-            // Check if user is logged in
-            var isLoggedIn = localStorage.getItem('isLoggedIn');
-            if (!isLoggedIn) {
+            var user = getCurrentUser();
+            if (!user) {
                 window.location.href = 'login.html';
                 return;
             }
 
-            // Update user profile
+            updateVisibility();
             updateUserProfile();
 
-            // Set current date
             var now = new Date();
             var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
             var dateElement = document.getElementById('currentDate');
@@ -843,13 +791,8 @@
                 dateElement.textContent = now.toLocaleDateString('en-US', options);
             }
 
-            // Load dashboard data
             loadDashboardData();
-
-            // Auto-refresh every 30 seconds
             setInterval(loadDashboardData, 30000);
-
-            console.log('✅ Dashboard initialized successfully!');
         });
     </script>
 </body>
