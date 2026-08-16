@@ -1,236 +1,181 @@
 // ============================================
-// AUTHENTICATION & ROLE MANAGEMENT
+// ROLE-BASED ACCESS CONTROL
 // ============================================
 
-const ROLES = {
-    ADMIN: 'admin',
-    INSTRUCTOR: 'instructor',
-    STUDENT: 'student',
-    RECEPTIONIST: 'receptionist'
-};
-
-// ============================================
-// PERMISSIONS - RECEPTIONIST IS LIMITED!
-// ============================================
-const PERMISSIONS = {
-    // 👑 ADMIN - FULL ACCESS TO EVERYTHING
-    admin: {
-        dashboard: true,
-        students: { view: true, add: true, edit: true, delete: true },
-        instructors: { view: true, add: true, edit: true, delete: true },
-        vehicles: { view: true, add: true, edit: true, delete: true },
-        lessons: { view: true, add: true, edit: true, delete: true },
-        payments: { view: true, add: true, edit: true, delete: true },
-        inquiries: { view: true, reply: true, delete: true, add: true },
-        employees: { view: true, add: true, edit: true, delete: true },
-        reports: { view: true, export: true },
-        studentInquiry: true
-    },
-
-    // 👨‍🏫 INSTRUCTOR - LIMITED
-    instructor: {
-        dashboard: true,
-        students: { view: true, add: false, edit: false, delete: false },
-        instructors: { view: false, add: false, edit: false, delete: false },
-        vehicles: { view: true, add: false, edit: false, delete: false },
-        lessons: { view: true, add: true, edit: true, delete: false },
-        payments: { view: false, add: false, edit: false, delete: false },
-        inquiries: { view: false, reply: false, delete: false, add: false },
-        employees: { view: false, add: false, edit: false, delete: false },
-        reports: { view: false, export: false },
-        studentInquiry: false
-    },
-
-    // 🎓 STUDENT - OWN DATA ONLY
-    student: {
-        dashboard: true,
-        students: { view: false, add: false, edit: false, delete: false },
-        instructors: { view: false, add: false, edit: false, delete: false },
-        vehicles: { view: false, add: false, edit: false, delete: false },
-        lessons: { view: 'own', add: false, edit: false, delete: false },
-        payments: { view: 'own', add: false, edit: false, delete: false },
-        inquiries: { view: false, reply: false, delete: false, add: false },
-        employees: { view: false, add: false, edit: false, delete: false },
-        reports: { view: false, export: false },
-        studentInquiry: true
-    },
-
-    // 👩‍💼 RECEPTIONIST - VIEW ONLY! NO ADD/EDIT/DELETE!
-    receptionist: {
-        dashboard: true,
-        students: { view: true, add: false, edit: false, delete: false },  // ✅ VIEW ONLY
-        instructors: { view: true, add: false, edit: false, delete: false }, // ✅ VIEW ONLY
-        vehicles: { view: true, add: false, edit: false, delete: false },    // ✅ VIEW ONLY
-        lessons: { view: true, add: true, edit: false, delete: false },      // ✅ Can schedule lessons
-        payments: { view: true, add: true, edit: false, delete: false },     // ✅ Can record payments
-        inquiries: { view: true, reply: false, delete: false, add: false },
-        employees: { view: false, add: false, edit: false, delete: false },
-        reports: { view: false, export: false },
-        studentInquiry: false
-    }
-};
-
-// ---------- GET CURRENT USER ----------
+// Get current user
 function getCurrentUser() {
     return JSON.parse(localStorage.getItem('user') || 'null');
 }
 
+// Check if user is logged in
+function isLoggedIn() {
+    return getCurrentUser() !== null;
+}
+
+// Check user role
 function getUserRole() {
     var user = getCurrentUser();
-    return user ? user.role : 'guest';
+    return user ? user.role : null;
 }
 
-function getUserId() {
-    var user = getCurrentUser();
-    return user ? user.id : null;
+// Check if user is admin
+function isAdmin() {
+    return getUserRole() === 'admin';
 }
 
-function getUserName() {
-    var user = getCurrentUser();
-    return user ? user.name : 'Guest';
+// Check if user is instructor
+function isInstructor() {
+    return getUserRole() === 'instructor';
 }
 
-// ---------- CHECK PERMISSIONS ----------
-function hasPermission(module, action) {
+// Check if user is receptionist
+function isReceptionist() {
+    return getUserRole() === 'receptionist';
+}
+
+// Check if user is student
+function isStudent() {
+    return getUserRole() === 'student';
+}
+
+// ============================================
+// PAGE ACCESS RULES
+// ============================================
+
+// Role permissions mapping
+var ROLE_PERMISSIONS = {
+    admin: {
+        pages: ['dashboard', 'students', 'instructors', 'vehicles', 'lessons', 'payments', 'inquiries', 'reports', 'change-password', 'student-inquiry', 'student-portal'],
+        actions: ['view_all', 'add', 'edit', 'delete', 'export']
+    },
+    instructor: {
+        pages: ['dashboard', 'lessons', 'student-inquiry', 'student-portal', 'change-password'],
+        actions: ['view_lessons', 'view_students']
+    },
+    receptionist: {
+        pages: ['dashboard', 'students', 'payments', 'inquiries', 'student-inquiry', 'student-portal', 'change-password'],
+        actions: ['view_students', 'add_students', 'view_payments', 'add_payments', 'view_inquiries']
+    },
+    student: {
+        pages: ['dashboard', 'student-portal', 'student-inquiry', 'change-password'],
+        actions: ['view_own_profile', 'submit_inquiry']
+    }
+};
+
+// Check if user can access a page
+function canAccessPage(pageName) {
     var role = getUserRole();
-    var permissions = PERMISSIONS[role];
+    if (!role) return false;
+    var permissions = ROLE_PERMISSIONS[role];
     if (!permissions) return false;
-    if (!permissions[module]) return false;
-    if (typeof permissions[module] === 'boolean') {
-        return permissions[module];
-    }
-    if (action) {
-        return permissions[module][action] || false;
-    }
-    return true;
+    return permissions.pages.indexOf(pageName) !== -1;
 }
 
-function canView(module) {
-    return hasPermission(module, 'view');
+// Check if user can perform an action
+function canPerformAction(action) {
+    var role = getUserRole();
+    if (!role) return false;
+    var permissions = ROLE_PERMISSIONS[role];
+    if (!permissions) return false;
+    // Admin can do everything
+    if (role === 'admin') return true;
+    return permissions.actions.indexOf(action) !== -1;
 }
 
-function canAdd(module) {
-    return hasPermission(module, 'add');
-}
+// ============================================
+// PAGE PROTECTION FUNCTION
+// ============================================
 
-function canEdit(module) {
-    return hasPermission(module, 'edit');
-}
-
-function canDelete(module) {
-    return hasPermission(module, 'delete');
-}
-
-function canStudentInquiry() {
-    return hasPermission('studentInquiry');
-}
-
-// ---------- CHECK AUTH ----------
-function checkAuth() {
-    var isLoggedIn = localStorage.getItem('isLoggedIn');
-    var currentPage = window.location.pathname.split('/').pop();
-    var publicPages = ['login.html', 'register.html', 'index.html', 'inquiry-public.html'];
-    if (!isLoggedIn && publicPages.indexOf(currentPage) === -1) {
+function protectPage(pageName) {
+    var user = getCurrentUser();
+    
+    // If not logged in, go to login
+    if (!user) {
         window.location.href = 'login.html';
         return false;
     }
+    
+    // Check if user can access this page
+    if (!canAccessPage(pageName)) {
+        alert('⛔ Access Denied! You do not have permission to view this page.');
+        window.location.href = 'dashboard.html';
+        return false;
+    }
+    
     return true;
 }
 
-// ---------- APPLY PERMISSIONS ----------
-function applyPermissions() {
+// ============================================
+// UI VISIBILITY FUNCTIONS
+// ============================================
+
+// Hide/show elements based on role
+function updateUIByRole() {
     var role = getUserRole();
+    var isAdminUser = role === 'admin';
+    var isInstructorUser = role === 'instructor';
+    var isReceptionistUser = role === 'receptionist';
+    var isStudentUser = role === 'student';
+    
+    // Admin-only elements
+    document.querySelectorAll('.admin-only').forEach(function(el) {
+        el.style.display = isAdminUser ? '' : 'none';
+    });
+    
+    // Instructor-only elements
+    document.querySelectorAll('.instructor-only').forEach(function(el) {
+        el.style.display = isInstructorUser ? '' : 'none';
+    });
+    
+    // Receptionist-only elements
+    document.querySelectorAll('.receptionist-only').forEach(function(el) {
+        el.style.display = isReceptionistUser ? '' : 'none';
+    });
+    
+    // Student-only elements
+    document.querySelectorAll('.student-only').forEach(function(el) {
+        el.style.display = isStudentUser ? '' : 'none';
+    });
+    
+    // Admin + Receptionist elements (can manage students)
+    document.querySelectorAll('.admin-receptionist').forEach(function(el) {
+        el.style.display = (isAdminUser || isReceptionistUser) ? '' : 'none';
+    });
+    
+    // Admin + Instructor elements
+    document.querySelectorAll('.admin-instructor').forEach(function(el) {
+        el.style.display = (isAdminUser || isInstructorUser) ? '' : 'none';
+    });
+    
+    // Hide from students
+    document.querySelectorAll('.not-student').forEach(function(el) {
+        el.style.display = isStudentUser ? 'none' : '';
+    });
+}
+
+// Show role-specific welcome message
+function showRoleWelcome() {
     var user = getCurrentUser();
-    var currentPage = window.location.pathname.split('/').pop();
+    var roleDisplay = document.getElementById('userRoleDisplay');
+    var welcomeMsg = document.getElementById('roleWelcomeMessage');
     
-    // Update sidebar - hide links user can't see
-    var sidebarLinks = document.querySelectorAll('.sidebar-menu a');
-    sidebarLinks.forEach(function(link) {
-        var href = link.getAttribute('href');
-        if (!href) return;
-        var page = href.split('/').pop();
-        var module = getModuleFromPage(page);
-        
-        // Special case for student inquiry
-        if (page === 'student-inquiry.html') {
-            if (!canStudentInquiry()) {
-                link.style.display = 'none';
-                var li = link.closest('li');
-                if (li) li.style.display = 'none';
-            }
-            return;
-        }
-        
-        if (module && !canView(module)) {
-            link.style.display = 'none';
-            var li = link.closest('li');
-            if (li) li.style.display = 'none';
-        }
-    });
-    
-    // Update user info in top bar
-    var avatar = document.querySelector('.user-avatar');
-    var nameSpan = document.querySelector('.user-profile span');
-    if (avatar && user) {
-        avatar.textContent = user.name.charAt(0).toUpperCase();
-    }
-    if (nameSpan && user) {
-        var roleDisplay = role.charAt(0).toUpperCase() + role.slice(1);
-        nameSpan.textContent = user.name + ' (' + roleDisplay + ')';
+    if (user && roleDisplay) {
+        var roleNames = {
+            'admin': 'Admin',
+            'instructor': 'Instructor',
+            'receptionist': 'Receptionist',
+            'student': 'Student'
+        };
+        roleDisplay.textContent = roleNames[user.role] || user.role;
     }
     
-    // Hide action buttons based on permissions
-    var addStudentBtn = document.querySelector('a[href="student-add.html"]');
-    if (addStudentBtn && !canAdd('students')) addStudentBtn.style.display = 'none';
-    
-    var editStudentBtns = document.querySelectorAll('a[href*="student-edit.html"]');
-    editStudentBtns.forEach(function(btn) {
-        if (!canEdit('students')) btn.style.display = 'none';
-    });
-    
-    var deleteStudentBtns = document.querySelectorAll('button[onclick*="deleteStudent"]');
-    deleteStudentBtns.forEach(function(btn) {
-        if (!canDelete('students')) btn.style.display = 'none';
-    });
-    
-    var addInstructorBtn = document.querySelector('a[href="instructor-add.html"]');
-    if (addInstructorBtn && !canAdd('instructors')) addInstructorBtn.style.display = 'none';
-    
-    var addVehicleBtn = document.querySelector('a[href="vehicle-add.html"]');
-    if (addVehicleBtn && !canAdd('vehicles')) addVehicleBtn.style.display = 'none';
-    
-    var addLessonBtn = document.querySelector('a[href="lesson-add.html"]');
-    if (addLessonBtn && !canAdd('lessons')) addLessonBtn.style.display = 'none';
-    
-    var addPaymentBtn = document.querySelector('a[href="payment-add.html"]');
-    if (addPaymentBtn && !canAdd('payments')) addPaymentBtn.style.display = 'none';
+    if (user && welcomeMsg) {
+        var messages = {
+            'admin': 'You have full access to the system.',
+            'instructor': 'You can view lessons and manage your schedule.',
+            'receptionist': 'You can manage students and payments.',
+            'student': 'You can view your profile and submit inquiries.'
+        };
+        welcomeMsg.textContent = messages[user.role] || 'Welcome to the system.';
+    }
 }
-
-function getModuleFromPage(page) {
-    var map = {
-        'students.html': 'students',
-        'student-add.html': 'students',
-        'student-edit.html': 'students',
-        'student-profile.html': 'students',
-        'instructors.html': 'instructors',
-        'instructor-add.html': 'instructors',
-        'vehicles.html': 'vehicles',
-        'vehicle-add.html': 'vehicles',
-        'vehicle-edit.html': 'vehicles',
-        'lessons.html': 'lessons',
-        'lesson-add.html': 'lessons',
-        'payments.html': 'payments',
-        'payment-add.html': 'payments',
-        'inquiries.html': 'inquiries',
-        'employees.html': 'employees',
-        'reports.html': 'reports'
-    };
-    return map[page] || null;
-}
-
-// ---------- INITIALIZE ----------
-document.addEventListener('DOMContentLoaded', function() {
-    if (checkAuth()) {
-        applyPermissions();
-    }
-});
