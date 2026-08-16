@@ -5,13 +5,360 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add Student - EXCEL INSTITUTE Driving School</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <link rel="stylesheet" href="css/style.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f0fdf4;
+            color: #1e293b;
+            line-height: 1.6;
+            display: flex;
+        }
+
+        /* ===== SIDEBAR ===== */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 270px;
+            height: 100%;
+            background: linear-gradient(180deg, #dc2626 0%, #b91c1c 40%, #7f1d1d 100%);
+            padding: 20px 0;
+            overflow-y: auto;
+            z-index: 1000;
+            transition: all 0.3s ease;
+            box-shadow: 4px 0 20px rgba(0,0,0,0.2);
+        }
+        .sidebar::-webkit-scrollbar { width: 4px; }
+        .sidebar::-webkit-scrollbar-track { background: rgba(255,255,255,0.05); }
+        .sidebar::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 10px; }
+        .sidebar-brand {
+            padding: 0 20px 20px;
+            border-bottom: 1px solid rgba(255,255,255,0.12);
+            margin-bottom: 20px;
+        }
+        .sidebar-brand h2 {
+            color: white;
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            font-weight: 700;
+        }
+        .sidebar-brand h2 i {
+            font-size: 28px;
+            color: #fbbf24;
+            background: rgba(255,255,255,0.12);
+            padding: 10px 12px;
+            border-radius: 12px;
+        }
+        .sidebar-brand .subtitle {
+            font-size: 10px;
+            color: #fca5a5;
+            font-weight: 400;
+            display: block;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+        }
+        .sidebar-menu {
+            list-style: none;
+            padding: 0 14px;
+        }
+        .sidebar-menu .menu-label {
+            font-size: 10px;
+            text-transform: uppercase;
+            color: #fca5a5;
+            padding: 12px 16px 6px;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            opacity: 0.7;
+        }
+        .sidebar-menu a {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 11px 16px;
+            color: #fecaca;
+            text-decoration: none;
+            border-radius: 10px;
+            transition: all 0.25s ease;
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 2px;
+        }
+        .sidebar-menu a:hover {
+            background: rgba(255,255,255,0.12);
+            color: white;
+            transform: translateX(4px);
+        }
+        .sidebar-menu a.active {
+            background: #fbbf24;
+            color: #7f1d1d;
+            box-shadow: 0 4px 16px rgba(251,191,36,0.35);
+        }
+        .sidebar-menu a i {
+            width: 20px;
+            font-size: 16px;
+            text-align: center;
+        }
+
+        /* ===== MAIN CONTENT ===== */
+        .main-content {
+            margin-left: 270px;
+            padding: 25px 35px;
+            min-height: 100vh;
+            width: 100%;
+            background: #f0fdf4;
+        }
+
+        /* ===== TOP NAV ===== */
+        .top-nav {
+            background: linear-gradient(135deg, #16a34a, #15803d);
+            padding: 14px 25px;
+            border-radius: 16px;
+            box-shadow: 0 4px 15px rgba(22,163,74,0.3);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+        .top-nav-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .top-nav-left h1 {
+            font-size: 20px;
+            font-weight: 700;
+            color: white;
+            margin: 0;
+        }
+        .mobile-toggle {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 24px;
+            color: white;
+            cursor: pointer;
+            padding: 5px;
+        }
+        .top-nav-right {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+            padding: 6px 14px 6px 6px;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+            background: rgba(255,255,255,0.12);
+        }
+        .user-profile:hover {
+            background: rgba(255,255,255,0.22);
+        }
+        .user-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: #fbbf24;
+            color: #7f1d1d;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 16px;
+        }
+        .user-profile span {
+            font-size: 14px;
+            font-weight: 500;
+            color: white;
+        }
+
+        /* ===== FORM ===== */
+        .form-container {
+            background: white;
+            padding: 35px;
+            border-radius: 16px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            margin-top: 20px;
+            max-width: 800px;
+        }
+        .form-container h2 {
+            color: #1e293b;
+            margin-bottom: 25px;
+            font-size: 22px;
+        }
+        .form-container h2 i {
+            color: #dc2626;
+            margin-right: 10px;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+        .form-group label {
+            font-weight: 600;
+            font-size: 14px;
+            display: block;
+            margin-bottom: 5px;
+            color: #1e293b;
+        }
+        .form-group .required {
+            color: #dc2626;
+        }
+        .form-control {
+            width: 100%;
+            padding: 10px 14px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            background: white;
+        }
+        .form-control:focus {
+            outline: none;
+            border-color: #dc2626;
+            box-shadow: 0 0 0 3px rgba(220,38,38,0.1);
+        }
+        .form-control::placeholder {
+            color: #9ca3af;
+        }
+        textarea.form-control {
+            resize: vertical;
+            min-height: 80px;
+            font-family: inherit;
+        }
+        select.form-control {
+            appearance: auto;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 1px solid #e5e7eb;
+        }
+
+        /* ===== BUTTONS ===== */
+        .btn {
+            padding: 10px 22px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #dc2626, #b91c1c);
+            color: white;
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(220,38,38,0.3);
+        }
+        .btn-secondary {
+            background: #6b7280;
+            color: white;
+        }
+        .btn-secondary:hover {
+            background: #4b5563;
+            transform: translateY(-2px);
+        }
+
+        /* ===== ALERTS ===== */
+        .alert {
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .alert-success {
+            background: #dcfce7;
+            border: 1px solid #86efac;
+            color: #166534;
+        }
+        .alert-danger {
+            background: #fee2e2;
+            border: 1px solid #fca5a5;
+            color: #991b1b;
+        }
+        .alert i { font-size: 18px; }
+        .alert .close-btn {
+            margin-left: auto;
+            background: none;
+            border: none;
+            font-size: 18px;
+            cursor: pointer;
+            color: inherit;
+        }
+
+        /* ===== OVERLAY ===== */
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 999;
+        }
+        .overlay.show { display: block; }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+                width: 280px;
+            }
+            .sidebar.open { transform: translateX(0); }
+            .main-content {
+                margin-left: 0;
+                padding: 15px;
+            }
+            .mobile-toggle {
+                display: block !important;
+            }
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            .top-nav-left h1 { font-size: 18px; }
+            .user-profile span { display: none; }
+            .form-container { padding: 20px; }
+        }
+        @media (max-width: 480px) {
+            .main-content { padding: 10px; }
+            .top-nav { padding: 12px 15px; flex-wrap: wrap; gap: 10px; }
+            .form-container { padding: 15px; }
+            .form-actions { flex-direction: column; }
+            .form-actions .btn { width: 100%; justify-content: center; }
+        }
+    </style>
 </head>
 <body>
+    <!-- SIDEBAR -->
     <nav class="sidebar" id="sidebar">
         <div class="sidebar-brand">
             <h2>
-                <i class="fas fa-car" style="color: #dc2626;"></i>
+                <i class="fas fa-car"></i>
                 <div>
                     EXCEL INSTITUTE
                     <span class="subtitle">Driving School</span>
@@ -27,10 +374,12 @@
             <li><a href="lessons.html"><i class="fas fa-calendar-alt"></i> Lessons</a></li>
             <li><a href="payments.html"><i class="fas fa-money-bill-wave"></i> Payments</a></li>
             <li><a href="inquiries.html"><i class="fas fa-envelope"></i> Inquiries</a></li>
+            <li><a href="student-inquiry.html"><i class="fas fa-pen"></i> Submit Inquiry</a></li>
+            <li><a href="student-portal.html"><i class="fas fa-user-graduate"></i> Student Portal</a></li>
             <li class="menu-label">Reports</li>
             <li><a href="reports.html"><i class="fas fa-chart-bar"></i> Reports</a></li>
-        <li><a href="student-portal.html"><i class="fas fa-user-graduate"></i> student portal</a></li>
-</ul>
+            <li><a href="change-password.html"><i class="fas fa-key"></i> Change Password</a></li>
+        </ul>
     </nav>
 
     <div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
@@ -45,8 +394,8 @@
             </div>
             <div class="top-nav-right">
                 <div class="user-profile" onclick="handleLogout()">
-                    <div class="user-avatar">A</div>
-                    <span>Admin</span>
+                    <div class="user-avatar" id="userAvatar">A</div>
+                    <span id="userNameDisplay">Admin</span>
                 </div>
             </div>
         </div>
@@ -54,6 +403,7 @@
         <div id="alertContainer"></div>
 
         <div class="form-container">
+            <h2><i class="fas fa-user-plus"></i> <span id="formTitle">Register New Student</span></h2>
             <form id="studentForm" onsubmit="handleStudentSubmit(event)">
                 <input type="hidden" id="editStudentId" value="">
                 
@@ -113,18 +463,44 @@
         </div>
     </div>
 
-    <script src="js/app.js"></script>
     <script>
-        // ============================================
-        // STUDENT ADD/EDIT - FIXED
-        // ============================================
+        function toggleSidebar() {
+            var sidebar = document.getElementById('sidebar');
+            var overlay = document.getElementById('overlay');
+            if (sidebar) sidebar.classList.toggle('open');
+            if (overlay) overlay.classList.toggle('show');
+        }
+
+        function handleLogout() {
+            if (confirm('Are you sure you want to logout?')) {
+                localStorage.removeItem('isLoggedIn');
+                localStorage.removeItem('user');
+                localStorage.removeItem('userRole');
+                localStorage.removeItem('userName');
+                window.location.href = 'login.html';
+            }
+        }
+
+        function showAlert(message, type) {
+            var container = document.getElementById('alertContainer');
+            if (!container) return;
+            var alert = document.createElement('div');
+            alert.className = 'alert alert-' + type;
+            alert.innerHTML = '<i class="fas fa-' + (type === 'success' ? 'check-circle' : 'exclamation-circle') + '"></i> ' + message + ' <button class="close-btn" onclick="this.parentElement.remove()">&times;</button>';
+            container.appendChild(alert);
+            setTimeout(function() { if (alert.parentElement) alert.remove(); }, 5000);
+        }
 
         document.addEventListener('DOMContentLoaded', function() {
+            // Set default date to today
+            var today = new Date().toISOString().split('T')[0];
+            document.getElementById('enrollmentDate').value = today;
+
+            // Check if editing
             var urlParams = new URLSearchParams(window.location.search);
             var editId = urlParams.get('id');
             
             if (editId) {
-                // Load student data for editing
                 var students = JSON.parse(localStorage.getItem('students')) || [];
                 var student = students.find(function(s) { return s.id === parseInt(editId); });
                 
@@ -135,19 +511,24 @@
                     document.getElementById('nationalId').value = student.nationalId || '';
                     document.getElementById('email').value = student.email || '';
                     document.getElementById('licenseClass').value = student.licenseClass || '';
-                    document.getElementById('enrollmentDate').value = student.enrollmentDate || '';
+                    document.getElementById('enrollmentDate').value = student.enrollmentDate || today;
                     document.getElementById('address').value = student.address || '';
                     document.getElementById('pageTitle').textContent = 'Edit Student';
+                    document.getElementById('formTitle').textContent = 'Edit Student Details';
                     document.getElementById('submitBtn').innerHTML = '<i class="fas fa-save"></i> Update Student';
                 }
             }
+
+            var user = JSON.parse(localStorage.getItem('user') || 'null');
+            var avatar = document.getElementById('userAvatar');
+            var nameSpan = document.getElementById('userNameDisplay');
+            if (user && avatar) avatar.textContent = user.name.charAt(0).toUpperCase();
+            if (user && nameSpan) nameSpan.textContent = user.name + ' (' + (user.role.charAt(0).toUpperCase() + user.role.slice(1)) + ')';
         });
 
-        // This function is called when the form is submitted
         function handleStudentSubmit(event) {
             event.preventDefault();
             
-            // Get form values
             var fullName = document.getElementById('fullName').value;
             var phone = document.getElementById('phone').value;
             var nationalId = document.getElementById('nationalId').value;
@@ -156,20 +537,15 @@
             var enrollmentDate = document.getElementById('enrollmentDate').value;
             var address = document.getElementById('address').value;
 
-            // Validate
             if (!fullName || !phone || !nationalId || !licenseClass || !enrollmentDate) {
                 showAlert('Please fill in all required fields.', 'danger');
                 return;
             }
 
-            // Get existing students
             var students = JSON.parse(localStorage.getItem('students')) || [];
-            
-            // Check if editing
             var editId = document.getElementById('editStudentId').value;
 
             if (editId) {
-                // EDIT EXISTING STUDENT
                 var index = students.findIndex(function(s) { return s.id === parseInt(editId); });
                 if (index !== -1) {
                     students[index] = {
@@ -189,7 +565,6 @@
                     setTimeout(function() { window.location.href = 'students.html'; }, 1500);
                 }
             } else {
-                // ADD NEW STUDENT
                 var newStudent = {
                     id: students.length > 0 ? Math.max.apply(null, students.map(function(s) { return s.id; })) + 1 : 1,
                     studentNo: 'ST' + new Date().getFullYear() + String(students.length + 1).padStart(4, '0'),
@@ -204,11 +579,7 @@
                 };
                 students.push(newStudent);
                 localStorage.setItem('students', JSON.stringify(students));
-                
-                // Show success message
                 showAlert('Student registered successfully! Student No: ' + newStudent.studentNo, 'success');
-                
-                // Redirect after 1.5 seconds
                 setTimeout(function() { window.location.href = 'students.html'; }, 1500);
             }
         }
