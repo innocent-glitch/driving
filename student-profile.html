@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Profile - EXCEL INSTITUTE Driving School</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <nav class="sidebar" id="sidebar">
+        <div class="sidebar-brand">
+            <h2><i class="fas fa-car"></i> DriveSchool</h2>
+        </div>
+        <ul class="sidebar-menu">
+            <li class="menu-label">Main</li>
+            <li><a href="dashboard.html"><i class="fas fa-home"></i> Dashboard</a></li>
+            <li><a href="students.html" class="active"><i class="fas fa-users"></i> Students</a></li>
+            <li><a href="instructors.html"><i class="fas fa-chalkboard-teacher"></i> Instructors</a></li>
+            <li><a href="vehicles.html"><i class="fas fa-car"></i> Vehicles</a></li>
+            <li><a href="lessons.html"><i class="fas fa-calendar-alt"></i> Lessons</a></li>
+            <li><a href="payments.html"><i class="fas fa-money-bill-wave"></i> Payments</a></li>
+            <li class="menu-label">Reports</li>
+            <li><a href="reports.html"><i class="fas fa-chart-bar"></i> Reports</a></li>
+        <li><a href="student-portal.html"><i class="fas fa-user-graduate"></i> student portal</a></li>
+</ul>
+    </nav>
+
+    <div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
+
+    <div class="main-content">
+        <div class="top-nav">
+            <div class="top-nav-left">
+                <button class="mobile-toggle" onclick="toggleSidebar()">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <h1>Student Profile</h1>
+            </div>
+            <div class="top-nav-right">
+                <div class="user-profile" onclick="handleLogout()">
+                    <div class="user-avatar">A</div>
+                    <span>Admin</span>
+                </div>
+            </div>
+        </div>
+
+        <div id="studentProfile" style="background: white; border-radius: var(--radius); box-shadow: var(--shadow); padding: 30px;">
+            <div style="display: flex; align-items: center; gap: 30px; flex-wrap: wrap;">
+                <div style="width: 120px; height: 120px; border-radius: 50%; background: var(--primary); display: flex; align-items: center; justify-content: center; font-size: 48px; color: white; flex-shrink: 0;">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div>
+                    <h2 id="profileName">Peter Ochieng</h2>
+                    <p><strong>Student No:</strong> <span id="profileStudentNo">ST2024001</span></p>
+                    <p><strong>License Class:</strong> <span id="profileLicenseClass">B</span></p>
+                    <p><strong>Status:</strong> <span id="profileStatus" class="badge badge-success">Active</span></p>
+                    <p><strong>Enrollment Date:</strong> <span id="profileEnrollmentDate">2024-01-15</span></p>
+                </div>
+            </div>
+
+            <hr style="margin: 20px 0; border-color: var(--border);">
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                <div>
+                    <h4>Contact Information</h4>
+                    <p><strong>Phone:</strong> <span id="profilePhone">0712345678</span></p>
+                    <p><strong>Email:</strong> <span id="profileEmail">peter@email.com</span></p>
+                    <p><strong>National ID:</strong> <span id="profileNationalId">12345678</span></p>
+                    <p><strong>Address:</strong> <span id="profileAddress">Nairobi</span></p>
+                </div>
+                <div>
+                    <h4>Summary</h4>
+                    <div style="background: var(--light); padding: 15px; border-radius: var(--radius); margin-bottom: 10px;">
+                        <strong>Total Lessons:</strong> <span id="profileTotalLessons">5</span>
+                    </div>
+                    <div style="background: var(--light); padding: 15px; border-radius: var(--radius); margin-bottom: 10px;">
+                        <strong>Completed Lessons:</strong> <span id="profileCompletedLessons">3</span>
+                    </div>
+                    <div style="background: var(--light); padding: 15px; border-radius: var(--radius);">
+                        <strong>Total Payments:</strong> KSh <span id="profileTotalPayments">8,000</span>
+                    </div>
+                </div>
+            </div>
+
+            <div style="margin-top: 20px; display: flex; gap: 10px;">
+                <a href="student-edit.html?id=1" class="btn btn-warning">
+                    <i class="fas fa-edit"></i> Edit Student
+                </a>
+                <a href="students.html" class="btn btn-secondary">
+                    <i class="fas fa-arrow-left"></i> Back to List
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/app.js"></script>
+</body>
+</html>

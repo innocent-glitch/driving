@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lessons - EXCEL INSTITUTE Driving School</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .table-container {
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            background: linear-gradient(135deg, #dc2626, #b91c1c);
+        }
+        .table-header {
+            padding: 18px 24px;
+            border-bottom: 1px solid rgba(255,255,255,0.15);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .table-header h3 {
+            font-size: 16px;
+            font-weight: 600;
+            color: white;
+        }
+        .table-header h3 i { margin-right: 8px; }
+        .table-responsive {
+            overflow-x: auto;
+            padding: 0 20px 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        table th {
+            text-align: left;
+            padding: 12px 16px;
+            font-weight: 600;
+            font-size: 12px;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.7);
+            border-bottom: 1px solid rgba(255,255,255,0.15);
+        }
+        table td {
+            padding: 12px 16px;
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+            color: white;
+        }
+        table tr:hover td { background: rgba(255,255,255,0.05); }
+        .badge {
+            display: inline-block;
+            padding: 3px 12px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+            background: rgba(255,255,255,0.2);
+            color: white;
+        }
+        .badge-success { background: rgba(22, 163, 74, 0.6); color: white; }
+        .badge-danger { background: rgba(220, 38, 38, 0.6); color: white; }
+        .badge-warning { background: rgba(245, 158, 11, 0.6); color: white; }
+        .btn {
+            padding: 8px 18px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+        }
+        .btn-primary {
+            background: #fbbf24;
+            color: #7f1d1d;
+        }
+        .btn-primary:hover {
+            background: #fcd34d;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(251, 191, 36, 0.4);
+        }
+        .btn-danger {
+            background: #dc2626;
+            color: white;
+        }
+        .btn-danger:hover {
+            background: #b91c1c;
+            transform: translateY(-2px);
+        }
+        .btn-sm { padding: 5px 12px; font-size: 12px; }
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 999;
+        }
+        .overlay.show { display: block; }
+        @media (max-width: 768px) {
+            .sidebar { transform: translateX(-100%); width: 280px; }
+            .sidebar.open { transform: translateX(0); }
+            .main-content { margin-left: 0; padding: 15px; }
+            .mobile-toggle { display: block !important; }
+            .top-nav-left h1 { font-size: 18px; }
+            .user-profile span { display: none; }
+            .table-responsive { padding: 0 10px 10px; }
+            table th, table td { padding: 8px 10px; font-size: 12px; }
+        }
+        @media (max-width: 480px) {
+            .main-content { padding: 10px; }
+            .top-nav { padding: 12px 15px; flex-wrap: wrap; gap: 10px; }
+            table th, table td { padding: 6px 8px; font-size: 11px; }
+            .btn-sm { padding: 3px 8px; font-size: 10px; }
+        }
+    </style>
+</head>
+<body>
+    <nav class="sidebar" id="sidebar">
+        <div class="sidebar-brand">
+            <h2>
+                <i class="fas fa-car"></i>
+                <div>
+                    EXCEL INSTITUTE
+                    <span class="subtitle">Driving School</span>
+                </div>
+            </h2>
+        </div>
+        <!-- ✅ CORRECTED SIDEBAR - NO DUPLICATES -->
+        <ul class="sidebar-menu">
+            <li class="menu-label">Main</li>
+            <li><a href="dashboard.html"><i class="fas fa-home"></i> Dashboard</a></li>
+            <li><a href="students.html"><i class="fas fa-users"></i> Students</a></li>
+            <li><a href="instructors.html"><i class="fas fa-chalkboard-teacher"></i> Instructors</a></li>
+            <li><a href="vehicles.html"><i class="fas fa-car"></i> Vehicles</a></li>
+            <li><a href="lessons.html" class="active"><i class="fas fa-calendar-alt"></i> Lessons</a></li>
+            <li><a href="payments.html"><i class="fas fa-money-bill-wave"></i> Payments</a></li>
+            <li><a href="inquiries.html"><i class="fas fa-envelope"></i> Inquiries</a></li>
+            <li><a href="student-inquiry.html"><i class="fas fa-pen"></i> Submit Inquiry</a></li>
+            <li><a href="student-portal.html"><i class="fas fa-user-graduate"></i> Student Portal</a></li>
+            <li class="menu-label">Reports</li>
+            <li><a href="reports.html"><i class="fas fa-chart-bar"></i> Reports</a></li>
+            <li><a href="change-password.html"><i class="fas fa-key"></i> Change Password</a></li>
+        </ul>
+    </nav>
+
+    <div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
+
+    <div class="main-content">
+        <div class="top-nav">
+            <div class="top-nav-left">
+                <button class="mobile-toggle" onclick="toggleSidebar()">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <h1>Lessons</h1>
+            </div>
+            <div class="top-nav-right">
+                <div class="user-profile" onclick="handleLogout()">
+                    <div class="user-avatar" id="userAvatar">A</div>
+                    <span id="userNameDisplay">Admin</span>
+                </div>
+            </div>
+        </div>
+
+        <div id="alertContainer"></div>
+
+        <div class="table-container">
+            <div class="table-header">
+                <h3><i class="fas fa-list"></i> All Lessons</h3>
+                <div class="table-toolbar">
+                    <a href="lesson-add.html" class="btn btn-primary">
+                        <i class="fas fa-plus"></i> Schedule Lesson
+                    </a>
+                </div>
+            </div>
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Student</th>
+                            <th>Instructor</th>
+                            <th>Vehicle</th>
+                            <th>Date</th>
+                            <th>Time</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="lessonsTableBody"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleSidebar() {
+            var sidebar = document.getElementById('sidebar');
+            var overlay = document.getElementById('overlay');
+            if (sidebar) sidebar.classList.toggle('open');
+            if (overlay) overlay.classList.toggle('show');
+        }
+
+        function handleLogout() {
+            if (confirm('Are you sure you want to logout?')) {
+                localStorage.removeItem('isLoggedIn');
+                localStorage.removeItem('user');
+                localStorage.removeItem('userRole');
+                localStorage.removeItem('userName');
+                window.location.href = 'login.html';
+            }
+        }
+
+        function loadLessons() {
+            var tbody = document.getElementById('lessonsTableBody');
+            if (!tbody) return;
+
+            var lessons = JSON.parse(localStorage.getItem('lessons')) || [];
+            var students = JSON.parse(localStorage.getItem('students')) || [];
+            var instructors = JSON.parse(localStorage.getItem('instructors')) || [];
+            var vehicles = JSON.parse(localStorage.getItem('vehicles')) || [];
+
+            if (lessons.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="7" style="text-align: center; padding: 40px; color: rgba(255,255,255,0.6);"><i class="fas fa-calendar-alt" style="font-size: 40px; display: block; margin-bottom: 10px;"></i>No lessons found</td></tr>';
+                return;
+            }
+
+            var html = '';
+            lessons.forEach(function(lesson) {
+                var student = students.find(function(s) { return s.id === lesson.studentId; });
+                var instructor = instructors.find(function(i) { return i.id === lesson.instructorId; });
+                var vehicle = vehicles.find(function(v) { return v.id === lesson.vehicleId; });
+                var statusClass = lesson.status === 'completed' ? 'badge-success' : lesson.status === 'cancelled' ? 'badge-danger' : 'badge-warning';
+                var statusText = lesson.status ? lesson.status.charAt(0).toUpperCase() + lesson.status.slice(1) : 'Scheduled';
+                
+                html += '<tr>' +
+                    '<td>' + (student ? student.fullName : 'N/A') + '</td>' +
+                    '<td>' + (instructor ? instructor.fullName : 'N/A') + '</td>' +
+                    '<td>' + (vehicle ? vehicle.registrationNo : 'N/A') + '</td>' +
+                    '<td>' + (lesson.lessonDate || 'N/A') + '</td>' +
+                    '<td>' + (lesson.startTime || 'N/A') + ' - ' + (lesson.endTime || 'N/A') + '</td>' +
+                    '<td><span class="badge ' + statusClass + '">' + statusText + '</span></td>' +
+                    '<td>' +
+                        '<button onclick="deleteLesson(' + lesson.id + ')" class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></button>' +
+                    '</td>' +
+                '</tr>';
+            });
+            tbody.innerHTML = html;
+        }
+
+        function deleteLesson(id) {
+            if (confirm('Delete this lesson?')) {
+                var lessons = JSON.parse(localStorage.getItem('lessons')) || [];
+                lessons = lessons.filter(function(l) { return l.id !== id; });
+                localStorage.setItem('lessons', JSON.stringify(lessons));
+                loadLessons();
+                alert('Lesson deleted successfully!');
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            loadLessons();
+            
+            var user = JSON.parse(localStorage.getItem('user') || 'null');
+            var avatar = document.getElementById('userAvatar');
+            var nameSpan = document.getElementById('userNameDisplay');
+            if (user && avatar) avatar.textContent = user.name.charAt(0).toUpperCase();
+            if (user && nameSpan) nameSpan.textContent = user.name + ' (' + (user.role.charAt(0).toUpperCase() + user.role.slice(1)) + ')';
+        });
+    </script>
+</body>
+</html>

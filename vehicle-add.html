@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Vehicle - EXCEL INSTITUTE Driving School</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <nav class="sidebar" id="sidebar">
+        <div class="sidebar-brand">
+            <h2>
+                <i class="fas fa-car" style="color: #dc2626;"></i>
+                <div>
+                    EXCEL INSTITUTE
+                    <span class="subtitle">Driving School</span>
+                </div>
+            </h2>
+        </div>
+        <ul class="sidebar-menu">
+            <li class="menu-label">Main</li>
+            <li><a href="dashboard.html"><i class="fas fa-home"></i> Dashboard</a></li>
+            <li><a href="students.html"><i class="fas fa-users"></i> Students</a></li>
+            <li><a href="instructors.html"><i class="fas fa-chalkboard-teacher"></i> Instructors</a></li>
+            <li><a href="vehicles.html" class="active"><i class="fas fa-car"></i> Vehicles</a></li>
+            <li><a href="lessons.html"><i class="fas fa-calendar-alt"></i> Lessons</a></li>
+            <li><a href="payments.html"><i class="fas fa-money-bill-wave"></i> Payments</a></li>
+            <li class="menu-label">Reports</li>
+            <li><a href="reports.html"><i class="fas fa-chart-bar"></i> Reports</a></li>
+        <li><a href="student-portal.html"><i class="fas fa-user-graduate"></i> student portal</a></li>
+</ul>
+    </nav>
+
+    <div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
+
+    <div class="main-content">
+        <div class="top-nav">
+            <div class="top-nav-left">
+                <button class="mobile-toggle" onclick="toggleSidebar()">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <h1>Add Vehicle</h1>
+            </div>
+            <div class="top-nav-right">
+                <div class="user-profile" onclick="handleLogout()">
+                    <div class="user-avatar">A</div>
+                    <span>Admin</span>
+                </div>
+            </div>
+        </div>
+
+        <div id="alertContainer"></div>
+
+        <div class="form-container">
+            <form id="vehicleForm" onsubmit="handleVehicleSubmit(event)">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Registration No <span class="required">*</span></label>
+                        <input type="text" class="form-control" id="registrationNo" placeholder="KAA 123A" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Model <span class="required">*</span></label>
+                        <input type="text" class="form-control" id="model" placeholder="Toyota Corolla" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Year <span class="required">*</span></label>
+                    <input type="number" class="form-control" id="year" placeholder="2020" required>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save"></i> Add Vehicle
+                    </button>
+                    <a href="vehicles.html" class="btn btn-secondary">
+                        <i class="fas fa-times"></i> Cancel
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="js/app.js"></script>
+</body>
+</html>

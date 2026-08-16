@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Student - EXCEL INSTITUTE Driving School</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <nav class="sidebar" id="sidebar">
+        <div class="sidebar-brand">
+            <h2>
+                <i class="fas fa-car" style="color: #dc2626;"></i>
+                <div>
+                    EXCEL INSTITUTE
+                    <span class="subtitle">Driving School</span>
+                </div>
+            </h2>
+        </div>
+        <ul class="sidebar-menu">
+            <li class="menu-label">Main</li>
+            <li><a href="dashboard.html"><i class="fas fa-home"></i> Dashboard</a></li>
+            <li><a href="students.html" class="active"><i class="fas fa-users"></i> Students</a></li>
+            <li><a href="instructors.html"><i class="fas fa-chalkboard-teacher"></i> Instructors</a></li>
+            <li><a href="vehicles.html"><i class="fas fa-car"></i> Vehicles</a></li>
+            <li><a href="lessons.html"><i class="fas fa-calendar-alt"></i> Lessons</a></li>
+            <li><a href="payments.html"><i class="fas fa-money-bill-wave"></i> Payments</a></li>
+            <li class="menu-label">Reports</li>
+            <li><a href="reports.html"><i class="fas fa-chart-bar"></i> Reports</a></li>
+        <li><a href="student-portal.html"><i class="fas fa-user-graduate"></i> student portal</a></li>
+</ul>
+    </nav>
+
+    <div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
+
+    <div class="main-content">
+        <div class="top-nav">
+            <div class="top-nav-left">
+                <button class="mobile-toggle" onclick="toggleSidebar()">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <h1 id="pageTitle">Edit Student</h1>
+            </div>
+            <div class="top-nav-right">
+                <div class="user-profile" onclick="handleLogout()">
+                    <div class="user-avatar">A</div>
+                    <span>Admin</span>
+                </div>
+            </div>
+        </div>
+
+        <div id="alertContainer"></div>
+
+        <div class="form-container">
+            <form id="studentEditForm" onsubmit="handleStudentEdit(event)">
+                <input type="hidden" id="editStudentId" value="">
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Full Name <span class="required">*</span></label>
+                        <input type="text" class="form-control" id="editFullName" placeholder="Enter full name" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Phone <span class="required">*</span></label>
+                        <input type="tel" class="form-control" id="editPhone" placeholder="0712345678" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>National ID <span class="required">*</span></label>
+                        <input type="text" class="form-control" id="editNationalId" placeholder="12345678" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" class="form-control" id="editEmail" placeholder="student@email.com">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>License Class <span class="required">*</span></label>
+                        <select class="form-control" id="editLicenseClass" required>
+                            <option value="">Select Class</option>
+                            <option value="B">Class B - Light Vehicle</option>
+                            <option value="C">Class C - Medium Vehicle</option>
+                            <option value="D">Class D - Heavy Vehicle</option>
+                            <option value="E">Class E - Motorcycle</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Enrollment Date <span class="required">*</span></label>
+                        <input type="date" class="form-control" id="editEnrollmentDate" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Address</label>
+                    <textarea class="form-control" id="editAddress" rows="2" placeholder="Enter address"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>Status</label>
+                    <select class="form-control" id="editStatus">
+                        <option value="active">Active</option>
+                        <option value="completed">Completed</option>
+                        <option value="dropped">Dropped</option>
+                    </select>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save"></i> Update Student
+                    </button>
+                    <a href="students.html" class="btn btn-secondary">
+                        <i class="fas fa-times"></i> Cancel
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="js/app.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var urlParams = new URLSearchParams(window.location.search);
+            var id = urlParams.get('id');
+            
+            if (id) {
+                loadStudentForEdit(parseInt(id));
+            } else {
+                showAlert('No student specified!', 'danger');
+                setTimeout(function() { window.location.href = 'students.html'; }, 1500);
+            }
+        });
+
+        function loadStudentForEdit(id) {
+            var students = JSON.parse(localStorage.getItem('students')) || [];
+            var student = students.find(function(s) { return s.id === id; });
+            
+            if (student) {
+                document.getElementById('editStudentId').value = student.id;
+                document.getElementById('editFullName').value = student.fullName;
+                document.getElementById('editPhone').value = student.phone;
+                document.getElementById('editNationalId').value = student.nationalId;
+                document.getElementById('editEmail').value = student.email || '';
+                document.getElementById('editLicenseClass').value = student.licenseClass;
+                document.getElementById('editEnrollmentDate').value = student.enrollmentDate;
+                document.getElementById('editAddress').value = student.address || '';
+                document.getElementById('editStatus').value = student.status || 'active';
+                document.getElementById('pageTitle').textContent = 'Edit Student - ' + student.fullName;
+            } else {
+                showAlert('Student not found!', 'danger');
+                setTimeout(function() { window.location.href = 'students.html'; }, 1500);
+            }
+        }
+
+        function handleStudentEdit(event) {
+            event.preventDefault();
+            
+            var id = parseInt(document.getElementById('editStudentId').value);
+            var fullName = document.getElementById('editFullName').value;
+            var phone = document.getElementById('editPhone').value;
+            var nationalId = document.getElementById('editNationalId').value;
+            var email = document.getElementById('editEmail').value;
+            var licenseClass = document.getElementById('editLicenseClass').value;
+            var enrollmentDate = document.getElementById('editEnrollmentDate').value;
+            var address = document.getElementById('editAddress').value;
+            var status = document.getElementById('editStatus').value;
+
+            var students = JSON.parse(localStorage.getItem('students')) || [];
+            var index = students.findIndex(function(s) { return s.id === id; });
+            
+            if (index !== -1) {
+                students[index] = {
+                    id: students[index].id,
+                    studentNo: students[index].studentNo,
+                    fullName: fullName,
+                    phone: phone,
+                    nationalId: nationalId,
+                    email: email,
+                    licenseClass: licenseClass,
+                    enrollmentDate: enrollmentDate,
+                    address: address,
+                    status: status
+                };
+                localStorage.setItem('students', JSON.stringify(students));
+                showAlert('Student updated successfully!', 'success');
+                setTimeout(function() { window.location.href = 'students.html'; }, 1500);
+            } else {
+                showAlert('Student not found!', 'danger');
+            }
+        }
+    </script>
+</body>
+</html>

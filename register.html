@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register Employee - EXCEL INSTITUTE Driving School</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #dc2626 0%, #7f1d1d 100%);
+            padding: 20px;
+        }
+        .auth-card {
+            background: linear-gradient(135deg, #16a34a, #15803d);
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            max-width: 420px;
+            width: 100%;
+        }
+        .auth-logo {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .auth-logo .logo-icon {
+            background: #fbbf24;
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 15px;
+        }
+        .auth-logo .logo-icon i { font-size: 32px; color: #7f1d1d; }
+        .auth-logo h2 { font-size: 24px; font-weight: 700; color: white; }
+        .auth-logo .subtitle { color: #fbbf24; font-size: 14px; font-weight: 600; letter-spacing: 2px; }
+        .auth-logo p { color: rgba(255,255,255,0.8); font-size: 14px; margin-top: 5px; }
+        .form-group { margin-bottom: 18px; }
+        .form-group label { font-weight: 600; font-size: 14px; display: block; margin-bottom: 5px; color: white; }
+        .form-group .required { color: #fbbf24; }
+        .form-control {
+            width: 100%;
+            padding: 10px 14px;
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 8px;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            background: rgba(255,255,255,0.1);
+            color: white;
+        }
+        .form-control::placeholder { color: rgba(255,255,255,0.5); }
+        .form-control:focus {
+            outline: none;
+            border-color: #fbbf24;
+            background: rgba(255,255,255,0.15);
+        }
+        .btn-primary {
+            background: #fbbf24;
+            color: #7f1d1d;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        .btn-primary:hover { background: #fcd34d; transform: translateY(-2px); box-shadow: 0 4px 15px rgba(251, 191, 36, 0.4); }
+        .auth-footer { text-align: center; margin-top: 20px; font-size: 14px; color: rgba(255,255,255,0.7); }
+        .auth-footer a { color: #fbbf24; text-decoration: none; font-weight: 500; }
+        .auth-footer a:hover { text-decoration: underline; }
+        .alert {
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .alert-success { background: #dcfce7; border: 1px solid #86efac; color: #166534; }
+        .alert-danger { background: #fee2e2; border: 1px solid #fca5a5; color: #991b1b; }
+        @media (max-width: 480px) { .auth-card { padding: 25px; } }
+    </style>
+</head>
+<body>
+    <div class="auth-card fade-in">
+        <div class="auth-logo">
+            <div class="logo-icon"><i class="fas fa-car"></i></div>
+            <h2>EXCEL INSTITUTE</h2>
+            <div class="subtitle">DRIVING SCHOOL</div>
+            <p>Register New Employee</p>
+        </div>
+
+        <div id="alertMessage"></div>
+
+        <form id="registerForm" onsubmit="handleEmployeeRegister(event)">
+            <div class="form-group">
+                <label>Full Name <span class="required">*</span></label>
+                <input type="text" class="form-control" id="registerName" placeholder="Enter full name" required>
+            </div>
+            <div class="form-group">
+                <label>Email Address <span class="required">*</span></label>
+                <input type="email" class="form-control" id="registerEmail" placeholder="Enter email" required>
+            </div>
+            <div class="form-group">
+                <label>Role <span class="required">*</span></label>
+                <select class="form-control" id="registerRole" required>
+                    <option value="admin">Admin</option>
+                    <option value="instructor">Instructor</option>
+                    <option value="receptionist">Receptionist</option>
+                    <option value="student">Student</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Password <span class="required">*</span></label>
+                <input type="password" class="form-control" id="registerPassword" placeholder="Create password (min 6 chars)" required minlength="6">
+            </div>
+            <div class="form-group">
+                <label>Confirm Password <span class="required">*</span></label>
+                <input type="password" class="form-control" id="registerConfirmPassword" placeholder="Confirm password" required>
+            </div>
+            <button type="submit" class="btn-primary"><i class="fas fa-user-plus"></i> Register Employee</button>
+        </form>
+
+        <div class="auth-footer">
+            Already have an account? <a href="login.html">Sign in</a>
+        </div>
+    </div>
+
+    <script>
+        function handleEmployeeRegister(event) {
+            event.preventDefault();
+            var name = document.getElementById('registerName').value;
+            var email = document.getElementById('registerEmail').value;
+            var role = document.getElementById('registerRole').value;
+            var password = document.getElementById('registerPassword').value;
+            var confirmPassword = document.getElementById('registerConfirmPassword').value;
+
+            if (password !== confirmPassword) {
+                showAlert('Passwords do not match!', 'danger');
+                return;
+            }
+            if (password.length < 6) {
+                showAlert('Password must be at least 6 characters!', 'danger');
+                return;
+            }
+
+            var users = JSON.parse(localStorage.getItem('users') || '[]');
+            if (users.find(function(u) { return u.email === email; })) {
+                showAlert('Email already registered!', 'danger');
+                return;
+            }
+
+            var newUser = {
+                id: users.length > 0 ? Math.max.apply(null, users.map(function(u) { return u.id; })) + 1 : 1,
+                name: name,
+                email: email,
+                password: password,
+                role: role,
+                status: 'active'
+            };
+
+            users.push(newUser);
+            localStorage.setItem('users', JSON.stringify(users));
+            showAlert('Employee registered successfully! Role: ' + role.charAt(0).toUpperCase() + role.slice(1), 'success');
+            setTimeout(function() { window.location.href = 'login.html'; }, 1500);
+        }
+
+        function showAlert(message, type) {
+            var container = document.getElementById('alertMessage');
+            if (!container) return;
+            var alert = document.createElement('div');
+            alert.className = 'alert alert-' + type;
+            alert.innerHTML = message + ' <button onclick="this.parentElement.remove()" style="float:right;background:none;border:none;font-size:18px;cursor:pointer;">&times;</button>';
+            container.appendChild(alert);
+            setTimeout(function() { if (alert.parentElement) alert.remove(); }, 5000);
+        }
+    </script>
+</body>
+</html>

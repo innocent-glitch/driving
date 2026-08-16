@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Receipt - EXCEL INSTITUTE Driving School</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .receipt-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        }
+        .receipt-header {
+            background: linear-gradient(135deg, #dc2626, #b91c1c);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        .receipt-header .logo-icon {
+            background: rgba(255,255,255,0.15);
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 10px;
+        }
+        .receipt-header .logo-icon i {
+            font-size: 28px;
+            color: #fbbf24;
+        }
+        .receipt-header h1 {
+            font-size: 28px;
+            font-weight: 700;
+            letter-spacing: 2px;
+        }
+        .receipt-header .school-subtitle {
+            font-size: 16px;
+            font-weight: 300;
+            opacity: 0.9;
+        }
+        .receipt-header .contact-info {
+            font-size: 13px;
+            margin-top: 5px;
+            opacity: 0.8;
+        }
+        .receipt-header .receipt-title {
+            font-size: 18px;
+            font-weight: 600;
+            letter-spacing: 2px;
+            opacity: 0.95;
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid rgba(255,255,255,0.2);
+        }
+        .receipt-body {
+            padding: 30px;
+        }
+        .receipt-info {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 2px dashed #e2e8f0;
+        }
+        .receipt-info-item {
+            display: flex;
+            flex-direction: column;
+        }
+        .receipt-info-item .label {
+            font-size: 11px;
+            text-transform: uppercase;
+            color: #94a3b8;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+        .receipt-info-item .value {
+            font-size: 15px;
+            font-weight: 600;
+            margin-top: 3px;
+            color: #1e293b;
+        }
+        .receipt-details {
+            margin: 20px 0;
+        }
+        .receipt-details table {
+            width: 100%;
+        }
+        .receipt-details table tr {
+            border-bottom: 1px solid #e2e8f0;
+        }
+        .receipt-details table td {
+            padding: 12px 0;
+        }
+        .receipt-details table .label {
+            color: #64748b;
+            font-weight: 500;
+            font-size: 14px;
+        }
+        .receipt-details table .value {
+            font-weight: 600;
+            text-align: right;
+            font-size: 14px;
+        }
+        .receipt-total {
+            background: #f8fafc;
+            padding: 20px 25px;
+            border-radius: 12px;
+            margin-top: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .receipt-total .label {
+            font-size: 18px;
+            font-weight: 600;
+        }
+        .receipt-total .amount {
+            font-size: 28px;
+            font-weight: 700;
+            color: #dc2626;
+        }
+        .receipt-footer {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 2px dashed #e2e8f0;
+            margin-top: 20px;
+            color: #64748b;
+            font-size: 13px;
+        }
+        .receipt-footer .thank-you {
+            font-size: 16px;
+            font-weight: 600;
+            color: #dc2626;
+        }
+        .receipt-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            padding: 20px;
+            background: #f8fafc;
+            border-top: 1px solid #e2e8f0;
+            flex-wrap: wrap;
+        }
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+        }
+        .btn-primary {
+            background: #dc2626;
+            color: white;
+        }
+        .btn-primary:hover {
+            background: #b91c1c;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(220, 38, 38, 0.3);
+        }
+        .btn-success {
+            background: #16a34a;
+            color: white;
+        }
+        .btn-success:hover {
+            background: #15803d;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(22, 163, 74, 0.3);
+        }
+        .btn-secondary {
+            background: #64748b;
+            color: white;
+        }
+        .btn-secondary:hover {
+            background: #475569;
+            transform: translateY(-2px);
+        }
+        .status-paid { color: #16a34a; }
+        .status-pending { color: #f59e0b; }
+        .status-overdue { color: #dc2626; }
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 999;
+        }
+        .overlay.show { display: block; }
+        @media print {
+            .receipt-actions { display: none !important; }
+            .sidebar { display: none !important; }
+            .main-content { margin: 0 !important; padding: 0 !important; }
+            .top-nav { display: none !important; }
+            .receipt-container { box-shadow: none !important; border-radius: 0 !important; margin: 0 !important; }
+            .receipt-header { background: #dc2626 !important; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+            .receipt-header .logo-icon { background: rgba(255,255,255,0.15) !important; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+            body { background: white !important; }
+            .receipt-total { background: #f8fafc !important; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+        }
+        @media (max-width: 600px) {
+            .receipt-info { grid-template-columns: 1fr; gap: 10px; }
+            .receipt-total { flex-direction: column; text-align: center; gap: 10px; }
+            .receipt-header h1 { font-size: 22px; }
+            .receipt-body { padding: 20px; }
+            .receipt-actions { flex-direction: column; align-items: stretch; }
+            .receipt-actions .btn { justify-content: center; }
+            .main-content { margin-left: 0; padding: 15px; }
+            .sidebar { transform: translateX(-100%); }
+            .sidebar.open { transform: translateX(0); }
+            .mobile-toggle { display: block !important; }
+        }
+    </style>
+</head>
+<body>
+    <nav class="sidebar" id="sidebar">
+        <div class="sidebar-brand">
+            <h2>
+                <i class="fas fa-car"></i>
+                <div>
+                    EXCEL INSTITUTE
+                    <span class="subtitle">Driving School</span>
+                </div>
+            </h2>
+        </div>
+        <!-- ✅ CORRECTED SIDEBAR - NO DUPLICATES -->
+        <ul class="sidebar-menu">
+            <li class="menu-label">Main</li>
+            <li><a href="dashboard.html"><i class="fas fa-home"></i> Dashboard</a></li>
+            <li><a href="students.html"><i class="fas fa-users"></i> Students</a></li>
+            <li><a href="instructors.html"><i class="fas fa-chalkboard-teacher"></i> Instructors</a></li>
+            <li><a href="vehicles.html"><i class="fas fa-car"></i> Vehicles</a></li>
+            <li><a href="lessons.html"><i class="fas fa-calendar-alt"></i> Lessons</a></li>
+            <li><a href="payments.html" class="active"><i class="fas fa-money-bill-wave"></i> Payments</a></li>
+            <li><a href="inquiries.html"><i class="fas fa-envelope"></i> Inquiries</a></li>
+            <li><a href="student-inquiry.html"><i class="fas fa-pen"></i> Submit Inquiry</a></li>
+            <li><a href="student-portal.html"><i class="fas fa-user-graduate"></i> Student Portal</a></li>
+            <li class="menu-label">Reports</li>
+            <li><a href="reports.html"><i class="fas fa-chart-bar"></i> Reports</a></li>
+            <li><a href="change-password.html"><i class="fas fa-key"></i> Change Password</a></li>
+        </ul>
+    </nav>
+
+    <div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
+
+    <div class="main-content">
+        <div class="top-nav">
+            <div class="top-nav-left">
+                <button class="mobile-toggle" onclick="toggleSidebar()">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <h1>Payment Receipt</h1>
+            </div>
+            <div class="top-nav-right">
+                <div class="user-profile" onclick="handleLogout()">
+                    <div class="user-avatar" id="userAvatar">A</div>
+                    <span id="userNameDisplay">Admin</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="receipt-container" id="receiptContainer">
+            <div class="receipt-header">
+                <div class="logo-icon">
+                    <i class="fas fa-car"></i>
+                </div>
+                <h1>EXCEL INSTITUTE</h1>
+                <div class="school-subtitle">Driving School</div>
+                <div class="contact-info">
+                    <i class="fas fa-phone"></i> +254 700 000 000 &nbsp;|&nbsp; 
+                    <i class="fas fa-envelope"></i> info@excelinstitute.com &nbsp;|&nbsp;
+                    <i class="fas fa-map-marker-alt"></i> Nairobi, Kenya
+                </div>
+                <div class="receipt-title">OFFICIAL PAYMENT RECEIPT</div>
+            </div>
+
+            <div class="receipt-body" id="receiptBody">
+                <div class="receipt-info">
+                    <div class="receipt-info-item">
+                        <span class="label">Receipt Number</span>
+                        <span class="value" id="receiptNo">---</span>
+                    </div>
+                    <div class="receipt-info-item">
+                        <span class="label">Date</span>
+                        <span class="value" id="receiptDate">---</span>
+                    </div>
+                    <div class="receipt-info-item">
+                        <span class="label">Student Name</span>
+                        <span class="value" id="studentName">---</span>
+                    </div>
+                    <div class="receipt-info-item">
+                        <span class="label">Student ID</span>
+                        <span class="value" id="studentId">---</span>
+                    </div>
+                    <div class="receipt-info-item">
+                        <span class="label">Payment Method</span>
+                        <span class="value" id="paymentMethod">---</span>
+                    </div>
+                    <div class="receipt-info-item">
+                        <span class="label">Status</span>
+                        <span class="value" id="paymentStatus">---</span>
+                    </div>
+                </div>
+
+                <div class="receipt-details">
+                    <table>
+                        <tr>
+                            <td class="label">Description</td>
+                            <td class="value" id="paymentDescription">Driving Lesson Fees</td>
+                        </tr>
+                        <tr>
+                            <td class="label">Amount Paid</td>
+                            <td class="value" id="amountPaid">KSh 0.00</td>
+                        </tr>
+                        <tr>
+                            <td class="label">Balance</td>
+                            <td class="value" id="balanceDue">KSh 0.00</td>
+                        </tr>
+                        <tr>
+                            <td class="label">Notes</td>
+                            <td class="value" id="paymentNotes" style="text-align: left; font-weight: normal; color: #64748b;">---</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="receipt-total">
+                    <span class="label">Total Amount</span>
+                    <span class="amount" id="totalAmount">KSh 0.00</span>
+                </div>
+
+                <div class="receipt-footer">
+                    <div class="thank-you">Thank you for your payment!</div>
+                    <p style="font-size: 11px; margin-top: 5px;">
+                        This is a computer-generated receipt. No signature required.
+                    </p>
+                    <p style="font-size: 11px; margin-top: 5px;">
+                        Generated on: <span id="generatedDate"></span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="receipt-actions">
+                <button class="btn btn-primary" onclick="window.print()">
+                    <i class="fas fa-print"></i> Print Receipt
+                </button>
+                <button class="btn btn-success" onclick="downloadReceipt()">
+                    <i class="fas fa-download"></i> Download
+                </button>
+                <a href="payments.html" class="btn btn-secondary">
+                    <i class="fas fa-arrow-left"></i> Back to Payments
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleSidebar() {
+            var sidebar = document.getElementById('sidebar');
+            var overlay = document.getElementById('overlay');
+            if (sidebar) sidebar.classList.toggle('open');
+            if (overlay) overlay.classList.toggle('show');
+        }
+
+        function handleLogout() {
+            if (confirm('Are you sure you want to logout?')) {
+                localStorage.removeItem('isLoggedIn');
+                localStorage.removeItem('user');
+                localStorage.removeItem('userRole');
+                localStorage.removeItem('userName');
+                window.location.href = 'login.html';
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('generatedDate').textContent = new Date().toLocaleString();
+
+            var urlParams = new URLSearchParams(window.location.search);
+            var paymentId = urlParams.get('id');
+            
+            if (paymentId) {
+                loadReceiptData(parseInt(paymentId));
+            } else {
+                loadSampleReceipt();
+            }
+
+            var user = JSON.parse(localStorage.getItem('user') || 'null');
+            var avatar = document.getElementById('userAvatar');
+            var nameSpan = document.getElementById('userNameDisplay');
+            if (user && avatar) avatar.textContent = user.name.charAt(0).toUpperCase();
+            if (user && nameSpan) nameSpan.textContent = user.name + ' (' + (user.role.charAt(0).toUpperCase() + user.role.slice(1)) + ')';
+        });
+
+        function loadReceiptData(id) {
+            var payments = JSON.parse(localStorage.getItem('payments')) || [];
+            var students = JSON.parse(localStorage.getItem('students')) || [];
+            
+            var payment = payments.find(function(p) { return p.id === id; });
+            if (!payment) {
+                loadSampleReceipt();
+                return;
+            }
+
+            var student = students.find(function(s) { return s.id === payment.studentId; });
+            
+            document.getElementById('receiptNo').textContent = payment.receiptNo || 'RCPT' + String(id).padStart(3, '0');
+            document.getElementById('receiptDate').textContent = payment.paymentDate || new Date().toISOString().split('T')[0];
+            document.getElementById('studentName').textContent = student ? student.fullName : 'Unknown Student';
+            document.getElementById('studentId').textContent = student ? student.studentNo : 'N/A';
+            document.getElementById('paymentMethod').textContent = (payment.paymentMethod || 'cash').toUpperCase();
+            document.getElementById('amountPaid').textContent = 'KSh ' + (payment.amount || 0).toLocaleString();
+            document.getElementById('balanceDue').textContent = 'KSh ' + (payment.balance || 0).toLocaleString();
+            document.getElementById('totalAmount').textContent = 'KSh ' + (payment.amount || 0).toLocaleString();
+            document.getElementById('paymentNotes').textContent = payment.notes || 'No notes';
+            document.getElementById('paymentDescription').textContent = 'Driving Lesson Fees - Payment';
+            
+            var statusEl = document.getElementById('paymentStatus');
+            if (payment.balance === 0) {
+                statusEl.textContent = '✓ PAID';
+                statusEl.className = 'value status-paid';
+            } else if (payment.balance > 0) {
+                statusEl.textContent = '⚠ PARTIAL';
+                statusEl.className = 'value status-pending';
+            } else {
+                statusEl.textContent = '✗ OVERDUE';
+                statusEl.className = 'value status-overdue';
+            }
+        }
+
+        function loadSampleReceipt() {
+            document.getElementById('receiptNo').textContent = 'RCPT001';
+            document.getElementById('receiptDate').textContent = new Date().toISOString().split('T')[0];
+            document.getElementById('studentName').textContent = 'Sample Student';
+            document.getElementById('studentId').textContent = 'ST2024001';
+            document.getElementById('paymentMethod').textContent = 'CASH';
+            document.getElementById('paymentDescription').textContent = 'Driving Lesson Fees - Registration';
+            document.getElementById('amountPaid').textContent = 'KSh 5,000.00';
+            document.getElementById('balanceDue').textContent = 'KSh 0.00';
+            document.getElementById('totalAmount').textContent = 'KSh 5,000.00';
+            document.getElementById('paymentNotes').textContent = 'Registration payment - Class B';
+            document.getElementById('paymentStatus').textContent = '✓ PAID';
+            document.getElementById('paymentStatus').className = 'value status-paid';
+        }
+
+        function downloadReceipt() {
+            window.print();
+        }
+    </script>
+</body>
+</html>
