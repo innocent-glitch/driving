@@ -278,8 +278,8 @@
             color: white;
         }
         .badge-success { background: rgba(22,163,74,0.6); color: white; }
-        .badge-danger { background: rgba(220,38,38,0.6); color: white; }
         .badge-warning { background: rgba(245,158,11,0.6); color: white; }
+        .badge-danger { background: rgba(220,38,38,0.6); color: white; }
 
         .overlay {
             display: none;
@@ -394,6 +394,37 @@
     </div>
 
     <script>
+        // ============================================
+        // ADMIN ACCESS CONTROL
+        // ============================================
+        function getCurrentUser() {
+            return JSON.parse(localStorage.getItem('user') || 'null');
+        }
+
+        function restrictToAdmin() {
+            var user = getCurrentUser();
+            if (!user) {
+                window.location.href = 'login.html';
+                return false;
+            }
+            if (user.role !== 'admin') {
+                alert('⛔ Access Denied! This page is for Administrators only.');
+                window.location.href = 'dashboard.html';
+                return false;
+            }
+            return true;
+        }
+
+        (function() {
+            if (!restrictToAdmin()) {
+                return;
+            }
+        })();
+
+        // ============================================
+        // PAGE FUNCTIONS
+        // ============================================
+
         function toggleSidebar() {
             var sidebar = document.getElementById('sidebar');
             var overlay = document.getElementById('overlay');
@@ -448,12 +479,14 @@
         }
 
         document.addEventListener('DOMContentLoaded', function() {
-            loadVehicles();
-            var user = JSON.parse(localStorage.getItem('user') || 'null');
-            var avatar = document.getElementById('userAvatar');
-            var nameSpan = document.getElementById('userNameDisplay');
-            if (user && avatar) avatar.textContent = user.name.charAt(0).toUpperCase();
-            if (user && nameSpan) nameSpan.textContent = user.name + ' (' + (user.role.charAt(0).toUpperCase() + user.role.slice(1)) + ')';
+            if (restrictToAdmin()) {
+                loadVehicles();
+                var user = getCurrentUser();
+                var avatar = document.getElementById('userAvatar');
+                var nameSpan = document.getElementById('userNameDisplay');
+                if (user && avatar) avatar.textContent = user.name.charAt(0).toUpperCase();
+                if (user && nameSpan) nameSpan.textContent = user.name + ' (Admin)';
+            }
         });
     </script>
 </body>
