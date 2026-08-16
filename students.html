@@ -6,7 +6,6 @@
     <title>Students - EXCEL INSTITUTE Driving School</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <style>
-        /* ===== RESET ===== */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -16,7 +15,6 @@
             display: flex;
         }
 
-        /* ===== SIDEBAR ===== */
         .sidebar {
             position: fixed;
             top: 0;
@@ -102,8 +100,8 @@
             font-size: 16px;
             text-align: center;
         }
+        .sidebar-menu .admin-only { display: block; }
 
-        /* ===== MAIN CONTENT ===== */
         .main-content {
             margin-left: 270px;
             padding: 25px 35px;
@@ -112,7 +110,6 @@
             background: #f0fdf4;
         }
 
-        /* ===== TOP NAV ===== */
         .top-nav {
             background: linear-gradient(135deg, #16a34a, #15803d);
             padding: 14px 25px;
@@ -179,7 +176,6 @@
             color: white;
         }
 
-        /* ===== TABLE ===== */
         .table-container {
             border-radius: 16px;
             overflow: hidden;
@@ -230,7 +226,6 @@
             background: rgba(255,255,255,0.05);
         }
 
-        /* ===== BUTTONS ===== */
         .btn {
             padding: 8px 18px;
             border: none;
@@ -272,17 +267,8 @@
         .btn-sm {
             padding: 5px 12px;
             font-size: 12px;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
-            text-decoration: none;
         }
 
-        /* ===== BADGES ===== */
         .badge {
             display: inline-block;
             padding: 3px 12px;
@@ -294,10 +280,8 @@
         }
         .badge-success { background: rgba(22,163,74,0.6); color: white; }
         .badge-danger { background: rgba(220,38,38,0.6); color: white; }
-        .badge-warning { background: rgba(245,158,11,0.6); color: white; }
         .badge-info { background: rgba(59,130,246,0.6); color: white; }
 
-        /* ===== OVERLAY ===== */
         .overlay {
             display: none;
             position: fixed;
@@ -310,7 +294,6 @@
         }
         .overlay.show { display: block; }
 
-        /* ===== RESPONSIVE ===== */
         @media (max-width: 768px) {
             .sidebar {
                 transform: translateX(-100%);
@@ -338,7 +321,6 @@
     </style>
 </head>
 <body>
-    <!-- SIDEBAR -->
     <nav class="sidebar" id="sidebar">
         <div class="sidebar-brand">
             <h2>
@@ -414,6 +396,38 @@
     </div>
 
     <script>
+        // ============================================
+        // ADMIN ACCESS CONTROL - MUST BE FIRST!
+        // ============================================
+        function getCurrentUser() {
+            return JSON.parse(localStorage.getItem('user') || 'null');
+        }
+
+        function restrictToAdmin() {
+            var user = getCurrentUser();
+            if (!user) {
+                window.location.href = 'login.html';
+                return false;
+            }
+            if (user.role !== 'admin') {
+                alert('⛔ Access Denied! This page is for Administrators only.');
+                window.location.href = 'dashboard.html';
+                return false;
+            }
+            return true;
+        }
+
+        // Run access check immediately
+        (function() {
+            if (!restrictToAdmin()) {
+                return;
+            }
+        })();
+
+        // ============================================
+        // PAGE FUNCTIONS
+        // ============================================
+
         function toggleSidebar() {
             var sidebar = document.getElementById('sidebar');
             var overlay = document.getElementById('overlay');
@@ -434,19 +448,15 @@
         function loadStudents() {
             var tbody = document.getElementById('studentsTableBody');
             if (!tbody) return;
-
             var students = JSON.parse(localStorage.getItem('students')) || [];
-
             if (students.length === 0) {
                 tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; padding: 40px; color: rgba(255,255,255,0.6);"><i class="fas fa-users" style="font-size: 40px; display: block; margin-bottom: 10px;"></i>No students found</td></tr>';
                 return;
             }
-
             var html = '';
             students.forEach(function(student) {
                 var statusClass = student.status === 'active' ? 'badge-success' : student.status === 'completed' ? 'badge-info' : 'badge-danger';
                 var statusText = student.status ? student.status.charAt(0).toUpperCase() + student.status.slice(1) : 'Active';
-                
                 html += '<tr>' +
                     '<td><strong>' + (student.studentNo || 'N/A') + '</strong></td>' +
                     '<td>' + (student.fullName || 'N/A') + '</td>' +
@@ -473,13 +483,14 @@
         }
 
         document.addEventListener('DOMContentLoaded', function() {
-            loadStudents();
-            
-            var user = JSON.parse(localStorage.getItem('user') || 'null');
-            var avatar = document.getElementById('userAvatar');
-            var nameSpan = document.getElementById('userNameDisplay');
-            if (user && avatar) avatar.textContent = user.name.charAt(0).toUpperCase();
-            if (user && nameSpan) nameSpan.textContent = user.name + ' (' + (user.role.charAt(0).toUpperCase() + user.role.slice(1)) + ')';
+            if (restrictToAdmin()) {
+                loadStudents();
+                var user = getCurrentUser();
+                var avatar = document.getElementById('userAvatar');
+                var nameSpan = document.getElementById('userNameDisplay');
+                if (user && avatar) avatar.textContent = user.name.charAt(0).toUpperCase();
+                if (user && nameSpan) nameSpan.textContent = user.name + ' (Admin)';
+            }
         });
     </script>
 </body>
